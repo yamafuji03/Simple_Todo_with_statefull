@@ -1,7 +1,15 @@
-import 'package:flutter/material.dart';
+// files
 import 'package:todo2/registration.dart';
+import 'package:todo2/firebase_options.dart';
+// packages
+import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -18,7 +26,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
+  String mailAddress = "";
+  String password = "";
 
   @override
   Widget build(BuildContext context) {
@@ -37,14 +46,22 @@ class MyHomePage extends StatelessWidget {
                   "ToDoアプリ",
                   style: TextStyle(fontSize: 50),
                 ),
-                Text("log in")
+                Text("log in shitekudasai")
               ],
             ),
           ),
           CustomTextField(
-            label: "mail address",
-          ),
-          CustomTextField(label: "password"),
+              label: "mailaddress",
+              onChangedFunc: (newtext) {
+                mailAddress = newtext;
+              },
+              isPassword: false),
+          CustomTextField(
+              label: "password",
+              onChangedFunc: (newtext) {
+                password = newtext;
+              },
+              isPassword: true),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -77,15 +94,23 @@ class MyHomePage extends StatelessWidget {
 
 class CustomTextField extends StatelessWidget {
   String label;
+  void Function(String text) onChangedFunc;
+  bool isPassword;
 
-  CustomTextField({required this.label});
+  CustomTextField(
+      {required this.label,
+      required this.onChangedFunc,
+      required this.isPassword});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(8.0),
       child: TextField(
-        onChanged: (newtext) {},
+        onChanged: (newtext) {
+          onChangedFunc(newtext);
+        },
+        obscureText: isPassword ? true : false,
         decoration: InputDecoration(
             labelText: label,
             border: OutlineInputBorder(
