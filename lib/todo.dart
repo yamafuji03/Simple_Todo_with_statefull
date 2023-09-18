@@ -10,7 +10,7 @@ class Todo extends StatelessWidget {
         title: Text("Todo"),
         automaticallyImplyLeading: false,
       ),
-      body: Center(child: Text("welcom")),
+      body: Center(child: Text("welcome")),
     );
   }
 }

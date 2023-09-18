@@ -1,6 +1,8 @@
 // files
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:todo2/registration.dart';
 import 'package:todo2/firebase_options.dart';
+import 'package:todo2/todo.dart';
 // packages
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -26,8 +28,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  String mailAddress = "";
-  String password = "";
+  String mailAddress = "example@gmail.com";
+  String password = "aaaaaa";
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +78,57 @@ class MyHomePage extends StatelessWidget {
             ],
           ),
           ElevatedButton(
-              onPressed: () {},
+              onPressed: () async {
+                try {
+                  UserCredential userCredential = await FirebaseAuth.instance
+                      .signInWithEmailAndPassword(
+                          email: mailAddress, password: password);
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => Todo()));
+                } on FirebaseAuthException catch (e) {
+                  if (e.code == 'user-not-found') {
+                    print("メアド見つからない");
+                    showDialog(
+                        // おまじない
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                              // ウインドウ左上に表示させるもの
+                              title: Text("エラー"),
+                              // 内容入力
+                              content: Text("メールアドレスが見つかりません"),
+                              // ボタン。任意、書かなくてもいい
+                              actions: [
+                                TextButton(
+                                    child: Text("OK"),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    })
+                              ]);
+                        });
+                  } else if (e.code == 'wrong-password') {
+                    showDialog(
+                        // おまじない
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                              // ウインドウ左上に表示させるもの
+                              title: Text("エラー"),
+                              // 内容入力
+                              content: Text("パスワードが違います"),
+                              // ボタン。任意、書かなくてもいい
+                              actions: [
+                                TextButton(
+                                    child: Text("OK"),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    })
+                              ]);
+                        });
+                  }
+                  ;
+                }
+              },
               child: Container(
                 width: 200,
                 height: 50,
