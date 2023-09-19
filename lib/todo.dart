@@ -35,14 +35,10 @@ class Todo extends StatelessWidget {
                         onTap: () {},
 
                         onLongPress: () {
-                          String tokutei = FirebaseFirestore.instance
+                          FirebaseFirestore.instance
                               .collection(user.email!)
                               .doc()
-                              .id;
-                          // FirebaseFirestore.instance
-                          //     .collection(user.email!)
-                          //     .doc().id
-                          // .doc("${index}")
+                              .delete();
                         },
                       );
                     })
