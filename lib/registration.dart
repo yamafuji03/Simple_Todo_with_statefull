@@ -56,7 +56,7 @@ class Registration extends StatelessWidget {
                             ]);
                       });
                 } else {
-                  if (mailAddress != null && password != null) {
+                  if (mailAddress != "" && password != "") {
                     try {
                       UserCredential userCredential = await FirebaseAuth
                           .instance
@@ -64,10 +64,19 @@ class Registration extends StatelessWidget {
                               email: mailAddress, password: password);
 
                       final User user = userCredential.user!;
-                      FirebaseFirestore.instance
+
+                      final randomid = FirebaseFirestore.instance
                           .collection(user.email!)
                           .doc()
-                          .set({"item": "ToDoを始めよう", "done": false});
+                          .id;
+                      FirebaseFirestore.instance
+                          .collection(user.email!)
+                          .doc(randomid)
+                          .set({
+                        "item": "ToDoを始めよう",
+                        "done": false,
+                        "id": randomid
+                      });
 
                       print("登録完了");
                       showDialog(

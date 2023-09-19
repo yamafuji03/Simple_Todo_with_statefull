@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -34,11 +35,14 @@ class Todo extends StatelessWidget {
                         onTap: () {},
 
                         onLongPress: () {
-                          FirebaseFirestore.instance
+                          String tokutei = FirebaseFirestore.instance
                               .collection(user.email!)
                               .doc()
-                              // .doc("${index}")
-                              .delete();
+                              .id;
+                          // FirebaseFirestore.instance
+                          //     .collection(user.email!)
+                          //     .doc().id
+                          // .doc("${index}")
                         },
                       );
                     })
@@ -77,12 +81,17 @@ class Todo extends StatelessWidget {
                                 child: Text("OK"),
                                 onPressed: () {
                                   if (newitem != "") {
-                                    FirebaseFirestore.instance
+                                    final randomid = FirebaseFirestore.instance
                                         .collection(user.email!)
                                         .doc()
+                                        .id;
+                                    FirebaseFirestore.instance
+                                        .collection(user.email!)
+                                        .doc(randomid)
                                         .set({
                                       "item": newitem,
                                       "done": false,
+                                      'id': randomid,
                                     });
                                   }
                                   ;
