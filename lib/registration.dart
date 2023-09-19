@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/main.dart';
@@ -61,6 +62,13 @@ class Registration extends StatelessWidget {
                           .instance
                           .createUserWithEmailAndPassword(
                               email: mailAddress, password: password);
+
+                      final User user = userCredential.user!;
+                      FirebaseFirestore.instance
+                          .collection(user.uid)
+                          .doc()
+                          .set({"item": "ToDoを始めよう", "done": false});
+
                       print("登録完了");
                       showDialog(
                           // おまじない

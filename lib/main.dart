@@ -83,8 +83,9 @@ class MyHomePage extends StatelessWidget {
                   UserCredential userCredential = await FirebaseAuth.instance
                       .signInWithEmailAndPassword(
                           email: mailAddress, password: password);
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => Todo()));
+                  print(userCredential.user);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => Todo(user: userCredential.user!)));
                 } on FirebaseAuthException catch (e) {
                   if (e.code == 'user-not-found') {
                     print("メアド見つからない");
