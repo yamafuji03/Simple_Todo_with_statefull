@@ -11,7 +11,7 @@ class Todo extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
         // 指定したuser.uidのデータを取得する
-        stream: FirebaseFirestore.instance.collection(user.uid).snapshots(),
+        stream: FirebaseFirestore.instance.collection(user.email!).snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           return Scaffold(
             appBar: AppBar(
@@ -35,7 +35,7 @@ class Todo extends StatelessWidget {
 
                         onLongPress: () {
                           FirebaseFirestore.instance
-                              .collection(user.uid)
+                              .collection(user.email!)
                               .doc()
                               // .doc("${index}")
                               .delete();
@@ -78,7 +78,7 @@ class Todo extends StatelessWidget {
                                 onPressed: () {
                                   if (newitem != "") {
                                     FirebaseFirestore.instance
-                                        .collection(user.uid)
+                                        .collection(user.email!)
                                         .doc()
                                         .set({
                                       "item": newitem,

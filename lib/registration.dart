@@ -65,7 +65,7 @@ class Registration extends StatelessWidget {
 
                       final User user = userCredential.user!;
                       FirebaseFirestore.instance
-                          .collection(user.uid)
+                          .collection(user.email!)
                           .doc()
                           .set({"item": "ToDoを始めよう", "done": false});
 
