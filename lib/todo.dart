@@ -32,7 +32,11 @@ class Todo extends StatelessWidget {
                         // ドキュメントIDの特定し、リストの特定をするdocIDを取得
                         key: Key(snapshot.data!.docs[index].id),
                         // 左から右にスワイプしたときの背景（削除）
-                        background: Container(color: Colors.red),
+                        background: Container(
+                          color: Colors.red,
+                          child: Icon(Icons.delete),
+                          alignment: Alignment.centerLeft,
+                        ),
                         // 右から左にスワイプしたときの背景（アーカイブ）
                         secondaryBackground: Container(color: Colors.teal),
                         onDismissed: (direction) {
