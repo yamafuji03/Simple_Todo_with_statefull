@@ -58,17 +58,19 @@ class Registration extends StatelessWidget {
                 } else {
                   if (mailAddress != "" && password != "") {
                     try {
+                      // メールアドレスとパスワードの登録
                       UserCredential userCredential = await FirebaseAuth
                           .instance
                           .createUserWithEmailAndPassword(
                               email: mailAddress, password: password);
-
+                      // おまじない
                       final User user = userCredential.user!;
-
+                      // ランダムに生成されたドキュメントナンバーを取得
                       final randomid = FirebaseFirestore.instance
                           .collection(user.email!)
                           .doc()
                           .id;
+                      // 新規登録したときに例としてのtodoリストを１個作成する。このとき上で取得したDocIDをフィールド内の"id"に転記する
                       FirebaseFirestore.instance
                           .collection(user.email!)
                           .doc(randomid)

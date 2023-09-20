@@ -17,6 +17,7 @@ class Todo extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               title: Text("ToDo"),
+              // 戻るボタンの非表示
               automaticallyImplyLeading: false,
             ),
             // 三項演算子で、もしデータがあるなら、listview,ないならローディング中のクルクル表示
@@ -26,14 +27,16 @@ class Todo extends StatelessWidget {
                     itemCount: snapshot.data!.docs.length,
                     //おまじない。考えなくていい。
                     itemBuilder: (BuildContext context, int index) {
+                      // dismissibleでリストのスワイプを実装
                       return Dismissible(
-                        // ドキュメントIDの特定
+                        // ドキュメントIDの特定し、リストの特定をするdocIDを取得
                         key: Key(snapshot.data!.docs[index].id),
-
+                        // 左から右にスワイプしたときの背景（削除）
                         background: Container(color: Colors.red),
+                        // 右から左にスワイプしたときの背景（アーカイブ）
                         secondaryBackground: Container(color: Colors.teal),
                         onDismissed: (direction) {
-                          // スワイプ方向がendToStart（画面左から右）の場合の処理
+                          // スワイプ方向が左から右の場合の処理
                           if (direction == DismissDirection.startToEnd) {
                             // ランダムに生成したドキュメントIDを取得
                             // final documentId =

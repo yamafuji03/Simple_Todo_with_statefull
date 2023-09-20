@@ -80,6 +80,7 @@ class MyHomePage extends StatelessWidget {
           ElevatedButton(
               onPressed: () async {
                 try {
+                  // ログインさせる
                   UserCredential userCredential = await FirebaseAuth.instance
                       .signInWithEmailAndPassword(
                           email: mailAddress, password: password);
@@ -87,6 +88,7 @@ class MyHomePage extends StatelessWidget {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => Todo(user: userCredential.user!)));
                 } on FirebaseAuthException catch (e) {
+                  // もしerror code　'user-not-found'ならメールアドレスがない
                   if (e.code == 'user-not-found') {
                     print("メアド見つからない");
                     showDialog(
@@ -107,6 +109,7 @@ class MyHomePage extends StatelessWidget {
                                     })
                               ]);
                         });
+                    // もしerror code　'wrong-password'ならパスワード間違ってる
                   } else if (e.code == 'wrong-password') {
                     showDialog(
                         // おまじない
@@ -145,6 +148,7 @@ class MyHomePage extends StatelessWidget {
   }
 }
 
+//textfieldのテンプレ。main screenとregistrationで使ってる
 class CustomTextField extends StatelessWidget {
   String label;
   void Function(String text) onChangedFunc;
