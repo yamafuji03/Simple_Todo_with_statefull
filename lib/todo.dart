@@ -35,10 +35,26 @@ class Todo extends StatelessWidget {
                         onTap: () {},
 
                         onLongPress: () {
+                          // ロングタップしたときに選択したリストを削除するコード
+
+                          // ランダムに生成したドキュメントIDを取得
+                          // final documentId =
+                          //     snapshot.data!.docs[index].id;
+                          // フィールド上にID keyとして記録したドキュメントIDを取得
+                          final documentId = snapshot.data!.docs[index]['id'];
+
+                          // Firestoreからドキュメントを削除
                           FirebaseFirestore.instance
                               .collection(user.email!)
-                              .doc()
-                              .delete();
+                              .doc(documentId)
+                              .delete()
+                              .then((_) {
+                            // 成功時の処理
+                            print('ドキュメントが削除されました');
+                          }).catchError((error) {
+                            // エラー時の処理
+                            print('エラーが発生しました: $error');
+                          });
                         },
                       );
                     })
