@@ -26,36 +26,44 @@ class Todo extends StatelessWidget {
                     itemCount: snapshot.data!.docs.length,
                     //おまじない。考えなくていい。
                     itemBuilder: (BuildContext context, int index) {
-                      return ListTile(
-                        // それぞのdocumentに入ってるのitemの中身を表示
-                        title: Text(snapshot.data!.docs[index]["item"]),
-                        // doneの中がtrueなら何も表示しない　三項演算子
-                        trailing: Icon(Icons.check),
+                      return Dismissible(
+                        // ドキュメントIDの特定
+                        key: Key(snapshot.data!.docs[index].id),
 
-                        onTap: () {},
+                        background: Container(color: Colors.red),
+                        secondaryBackground: Container(color: Colors.teal),
+                        onDismissed: (direction) {
+                          // スワイプ方向がendToStart（画面左から右）の場合の処理
+                          if (direction == DismissDirection.startToEnd) {
+                            // ランダムに生成したドキュメントIDを取得
+                            // final documentId =
+                            //     snapshot.data!.docs[index].id;
+                            // フィールド上にID keyとして記録したドキュメントIDを取得
+                            final field_Id = snapshot.data!.docs[index]['id'];
 
-                        onLongPress: () {
-                          // ロングタップしたときに選択したリストを削除するコード
-
-                          // ランダムに生成したドキュメントIDを取得
-                          // final documentId =
-                          //     snapshot.data!.docs[index].id;
-                          // フィールド上にID keyとして記録したドキュメントIDを取得
-                          final field_Id = snapshot.data!.docs[index]['id'];
-
-                          // Firestoreからドキュメントを削除
-                          FirebaseFirestore.instance
-                              .collection(user.email!)
-                              .doc(field_Id)
-                              .delete()
-                              .then((_) {
-                            // 成功時の処理
-                            print('ドキュメントが削除されました');
-                          }).catchError((error) {
-                            // エラー時の処理
-                            print('エラーが発生しました: $error');
-                          });
+                            // Firestoreからドキュメントを削除
+                            FirebaseFirestore.instance
+                                .collection(user.email!)
+                                .doc(field_Id)
+                                .delete()
+                                .then((_) {
+                              // 成功時の処理
+                              print('ドキュメントが削除されました');
+                            }).catchError((error) {
+                              // エラー時の処理
+                              print('エラーが発生しました: $error');
+                            });
+                            // スワイプ方向がstartToEnd（画面右から左）の場合の処理
+                          } else {
+                            // ここはアーカイブとしてやったものを流す、流したものは別ウインドウでストックしたい
+                          }
                         },
+                        child: ListTile(
+                          // それぞのdocumentに入ってるのitemの中身を表示
+                          title: Text(snapshot.data!.docs[index]["item"]),
+                          // doneの中がtrueなら何も表示しない　三項演算子
+                          trailing: Icon(Icons.check),
+                        ),
                       );
                     },
                   )
