@@ -41,12 +41,12 @@ class Todo extends StatelessWidget {
                           // final documentId =
                           //     snapshot.data!.docs[index].id;
                           // フィールド上にID keyとして記録したドキュメントIDを取得
-                          final documentId = snapshot.data!.docs[index]['id'];
+                          final field_Id = snapshot.data!.docs[index]['id'];
 
                           // Firestoreからドキュメントを削除
                           FirebaseFirestore.instance
                               .collection(user.email!)
-                              .doc(documentId)
+                              .doc(field_Id)
                               .delete()
                               .then((_) {
                             // 成功時の処理
@@ -57,7 +57,8 @@ class Todo extends StatelessWidget {
                           });
                         },
                       );
-                    })
+                    },
+                  )
                 // リストの中が何もないならクルクルの表示
                 : SizedBox(
                     child: Center(
