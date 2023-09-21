@@ -11,8 +11,9 @@ class Todo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-        // 指定したuser.uidのデータを取得する
+        // 指定したuser.emailのデータを取得する
         stream: FirebaseFirestore.instance.collection(user.email!).snapshots(),
+        // おまじない
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           return Scaffold(
             appBar: AppBar(
@@ -27,7 +28,7 @@ class Todo extends StatelessWidget {
                     itemCount: snapshot.data!.docs.length,
                     //おまじない。考えなくていい。
                     itemBuilder: (BuildContext context, int index) {
-                      // dismissibleでリストのスワイプを実装
+                      // dismissibleでリストのスワイプを実装。keyプロパティを書く必要がある
                       return Dismissible(
                         // ドキュメントIDの特定し、リストの特定をするdocIDを取得
                         key: Key(snapshot.data!.docs[index].id),
@@ -45,15 +46,14 @@ class Todo extends StatelessWidget {
                           // スワイプ方向が左から右の場合の処理
                           if (direction == DismissDirection.startToEnd) {
                             // ランダムに生成したドキュメントIDを取得
-                            // final documentId =
-                            //     snapshot.data!.docs[index].id;
+                            // final documentId = snapshot.data!.docs[index].id;
                             // フィールド上にID keyとして記録したドキュメントIDを取得
-                            final field_Id = snapshot.data!.docs[index]['id'];
+                            final field_id = snapshot.data!.docs[index]['id'];
 
-                            // Firestoreからドキュメントを削除
+                            // Firestoreからfield_idからドキュメントIDを取得してドキュメントを削除
                             FirebaseFirestore.instance
                                 .collection(user.email!)
-                                .doc(field_Id)
+                                .doc(field_id)
                                 .delete()
                                 .then((_) {
                               // 成功時の処理
