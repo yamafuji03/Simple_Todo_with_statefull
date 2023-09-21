@@ -37,8 +37,10 @@ class Todo extends StatelessWidget {
                           child: Icon(Icons.delete),
                           alignment: Alignment.centerLeft,
                         ),
+                        // 右にスワイプしかさせない設定
+                        direction: DismissDirection.startToEnd,
                         // 右から左にスワイプしたときの背景（アーカイブ）
-                        secondaryBackground: Container(color: Colors.teal),
+                        // secondaryBackground: Container(color: Colors.teal),
                         onDismissed: (direction) {
                           // スワイプ方向が左から右の場合の処理
                           if (direction == DismissDirection.startToEnd) {
@@ -70,6 +72,7 @@ class Todo extends StatelessWidget {
                           title: Text(snapshot.data!.docs[index]["item"]),
                           // doneの中がtrueなら何も表示しない　三項演算子
                           trailing: Icon(Icons.check),
+                          onTap: () {},
                         ),
                       );
                     },
