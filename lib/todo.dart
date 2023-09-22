@@ -3,16 +3,24 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class Todo extends StatelessWidget {
+class Todo extends StatefulWidget {
   User user;
   Todo({required this.user});
+
+  @override
+  State<Todo> createState() => _TodoState();
+}
+
+class _TodoState extends State<Todo> {
   String newitem = "";
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
         // 指定したuser.emailのデータを取得する
-        stream: FirebaseFirestore.instance.collection(user.email!).snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection(widget.user.email!)
+            .snapshots(),
         // おまじない
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           return Scaffold(
@@ -52,19 +60,9 @@ class Todo extends StatelessWidget {
 
                             // Firestoreからfield_idからドキュメントIDを取得してドキュメントを削除
                             FirebaseFirestore.instance
-                                .collection(user.email!)
+                                .collection(widget.user.email!)
                                 .doc(field_id)
-                                .delete()
-                                .then((_) {
-                              // 成功時の処理
-                              print('ドキュメントが削除されました');
-                            }).catchError((error) {
-                              // エラー時の処理
-                              print('エラーが発生しました: $error');
-                            });
-                            // スワイプ方向がstartToEnd（画面右から左）の場合の処理
-                          } else {
-                            // ここはアーカイブとしてやったものを流す、流したものは別ウインドウでストックしたい
+                                .delete();
                           }
                         },
                         child: ListTile(
@@ -113,15 +111,14 @@ class Todo extends StatelessWidget {
                                 onPressed: () {
                                   if (newitem != "") {
                                     final randomid = FirebaseFirestore.instance
-                                        .collection(user.email!)
+                                        .collection(widget.user.email!)
                                         .doc()
                                         .id;
                                     FirebaseFirestore.instance
-                                        .collection(user.email!)
+                                        .collection(widget.user.email!)
                                         .doc(randomid)
                                         .set({
                                       "item": newitem,
-                                      "done": false,
                                       'id': randomid,
                                     });
                                   }
