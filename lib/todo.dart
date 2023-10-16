@@ -20,6 +20,7 @@ class _TodoState extends State<Todo> {
         // 指定したuser.emailのデータを取得する
         stream: FirebaseFirestore.instance
             .collection(widget.user.email!)
+            .orderBy('order')
             .snapshots(),
         // おまじない
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -97,43 +98,63 @@ class _TodoState extends State<Todo> {
     }
 
     return ReorderableListView.builder(
-      onReorder: (int oldIndex, int newIndex) async {
+      onReorder: (int oldIndex, int newIndex) {
         if (oldIndex < newIndex) {
-          newIndex -= 1;
+          // 動かすドキュメントIDを取得
+          final moveId = snapshot.data!.docs[oldIndex].id;
+          FirebaseFirestore.instance
+              .collection(widget.user.email!)
+              .doc(moveId)
+              .update({
+            // newIndexだと最大値プラス１が取れてしまうため、マイナス１で移動先リストと同じindexになるように調整
+            'order': newIndex - 1,
+          });
+
+          // ここでforでそれ以外のorderをマイナス１にする
+          // 始まりを「１」とするのはorderの値をマイナス１してることから１始まりにしないとorder番号がマイナスになる可能性が出るから
+          for (int i = 1; i <= newIndex - 1; i = i + 1) {
+            // 他のドキュメントのIDを取得
+            final otherId = snapshot.data!.docs[i].id;
+            // 移動させたリストと古いリストのorderが被っているから、もし移動したIDとiのIDが違うなら処理を実行とする。
+            if (moveId != otherId) {
+              FirebaseFirestore.instance
+                  .collection(widget.user.email!)
+                  .doc(otherId)
+                  .update({
+                // orderをi-1にして選択されていないリストの中にあるorderを１ずらす
+                'order': i - 1,
+              });
+            }
+          }
+        } else {
+          // 動かすドキュメントIDを取得
+          final moveId = snapshot.data!.docs[oldIndex].id;
+
+          // ここでforでそれ以外のorderをマイナス１にする
+          // 始まりを「１」とするのはorderの値をマイナス１してることから１始まりにしないとorder番号がマイナスになる可能性が出るから
+          for (int i = newIndex; i <= oldIndex; i = i + 1) {
+            // 他のドキュメントのIDを取得
+            final otherId = snapshot.data!.docs[i].id;
+            // 移動させたリストと古いリストのorderが被っているから、もし移動したIDとiのIDが違うなら処理を実行とする。
+            if (moveId != otherId) {
+              FirebaseFirestore.instance
+                  .collection(widget.user.email!)
+                  .doc(otherId)
+                  .update({
+                // orderをi-1にして選択されていないリストの中にあるorderを１ずらす
+                'order': i + 1,
+              });
+            }
+          }
+
+          FirebaseFirestore.instance
+              .collection(widget.user.email!)
+              .doc(moveId)
+              .update({
+            // newIndexだと最大値プラス１が取れてしまうため、マイナス１で移動先リストと同じindexになるように調整
+            'order': newIndex,
+          });
         }
-
-        // // final int item = FirebaseFirestore.instance
-        // //     .collection(widget.user.email!)
-        // //     .doc()
-        // //     .removeAt(oldIndex);
-        // // _items.insert(newIndex, item);
-        // // setState(() {});
-
-        // if (oldIndex != newIndex) {
-        //   // newIndex -= 1;
-
-        //   // 古い位置からアイテムを削除
-        //   final itemToRemove = snapshot.data!.docs[oldIndex];
-        //   await FirebaseFirestore.instance
-        //       .collection(widget.user.email!)
-        //       .doc(itemToRemove.id)
-        //       .delete();
-
-        //   // アイテムを新しい位置に挿入
-        //   await FirebaseFirestore.instance
-        //       .collection(widget.user.email!)
-        //       // ２個つ食ってoldとnewを逆転させるのを作る。デリートがいらなくなる
-        //       .doc(snapshot.data!.docs[oldIndex].id)
-        //       // setの代わりにupdateにする
-        //       .update({
-        //     "item": itemToRemove["item"],
-        //     "id": itemToRemove.id,
-        //     // した追加
-        //     'order': newIndex,
-        //   });
-
-        //   setState(() {});
-        // }
       },
       // コレクションIDにあるドキュメントの最大値がアイテムカウント
       itemCount: snapshot.data!.docs.length,
@@ -171,6 +192,7 @@ class _TodoState extends State<Todo> {
           child: ListTile(
             // それぞのdocumentに入ってるのitemの中身を表示
             title: Text(snapshot.data!.docs[index]["item"]),
+            subtitle: Text(snapshot.data!.docs[index]['order'].toString()),
             // doneの中がtrueなら何も表示しない　三項演算子
             trailing: Icon(Icons.check),
             onTap: () {},
