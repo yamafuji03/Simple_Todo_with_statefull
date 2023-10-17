@@ -12,16 +12,14 @@ class Todo extends StatefulWidget {
 }
 
 class _TodoState extends State<Todo> {
+  final db = FirebaseFirestore.instance;
   String newitem = "";
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
         // 指定したuser.emailのデータを取得する
-        stream: FirebaseFirestore.instance
-            .collection(widget.user.email!)
-            .orderBy('order')
-            .snapshots(),
+        stream: db.collection(widget.user.email!).orderBy('order').snapshots(),
         // おまじない
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           return Scaffold(
@@ -59,12 +57,12 @@ class _TodoState extends State<Todo> {
                                 child: Text("OK"),
                                 onPressed: () {
                                   if (newitem != "") {
-                                    final randomid = FirebaseFirestore.instance
+                                    final randomid = db
                                         .collection(widget.user.email!)
                                         .doc()
                                         .id;
 
-                                    FirebaseFirestore.instance
+                                    db
                                         .collection(widget.user.email!)
                                         .doc(randomid)
                                         .set({
@@ -102,10 +100,7 @@ class _TodoState extends State<Todo> {
         if (oldIndex < newIndex) {
           // 動かすドキュメントIDを取得
           final moveId = snapshot.data!.docs[oldIndex].id;
-          FirebaseFirestore.instance
-              .collection(widget.user.email!)
-              .doc(moveId)
-              .update({
+          db.collection(widget.user.email!).doc(moveId).update({
             // newIndexだと最大値プラス１が取れてしまうため、マイナス１で移動先リストと同じindexになるように調整
             'order': newIndex - 1,
           });
@@ -117,10 +112,7 @@ class _TodoState extends State<Todo> {
             final otherId = snapshot.data!.docs[i].id;
             // 移動させたリストと古いリストのorderが被っているから、もし移動したIDとiのIDが違うなら処理を実行とする。
             if (moveId != otherId) {
-              FirebaseFirestore.instance
-                  .collection(widget.user.email!)
-                  .doc(otherId)
-                  .update({
+              db.collection(widget.user.email!).doc(otherId).update({
                 // orderをi-1にして選択されていないリストの中にあるorderを１ずらす
                 'order': i - 1,
               });
@@ -137,19 +129,13 @@ class _TodoState extends State<Todo> {
             final otherId = snapshot.data!.docs[i].id;
             // 移動させたリストと古いリストのorderが被ってないなら、orderをプラス１して並び替える。
             if (moveId != otherId) {
-              FirebaseFirestore.instance
-                  .collection(widget.user.email!)
-                  .doc(otherId)
-                  .update({
+              db.collection(widget.user.email!).doc(otherId).update({
                 'order': i + 1,
               });
             }
           }
 
-          FirebaseFirestore.instance
-              .collection(widget.user.email!)
-              .doc(moveId)
-              .update({
+          db.collection(widget.user.email!).doc(moveId).update({
             // newIndexをそのままorder番号にする
             'order': newIndex,
           });
@@ -157,7 +143,7 @@ class _TodoState extends State<Todo> {
       },
       // コレクションIDにあるドキュメントの最大値がアイテムカウント
       itemCount: snapshot.data!.docs.length,
-      //おまじない。考えなくていい。
+      // itemCount分indexが回る
       itemBuilder: (BuildContext context, int index) {
         // dismissibleでリストのスワイプを実装。keyプロパティを書く必要がある
         return Dismissible(
@@ -177,21 +163,32 @@ class _TodoState extends State<Todo> {
             // スワイプ方向が左から右の場合の処理
             if (direction == DismissDirection.startToEnd) {
               // ランダムに生成したドキュメントIDを取得
-              // final documentId = snapshot.data!.docs[index].id;
+              final field_id = snapshot.data!.docs[index].id;
               // フィールド上にID keyとして記録したドキュメントIDを取得
-              final field_id = snapshot.data!.docs[index]['id'];
+              // final field_id = snapshot.data!.docs[index]['id'];
 
               // Firestoreからfield_idからドキュメントIDを取得してドキュメントを削除
-              FirebaseFirestore.instance
-                  .collection(widget.user.email!)
-                  .doc(field_id)
-                  .delete();
+              db.collection(widget.user.email!).doc(field_id).update({
+                'isCompleted': true,
+              });
+
+// // forでorderを再並べ替えをする
+// //
+//  unCompletedLists = db.collection(widget.user.email!).where('isCompleted', isEqualTo: false).snapshots();
+// for (int i=0; i =< is isCompletedのfalseの最大値 ;  ){
+//   db
+//                   .collection(widget.user.email!)
+//                   .doc(snapshot.data!.docs[i])
+//                   .update({
+//                 'order': i,
+//  } );}
             }
           },
           child: ListTile(
             // それぞのdocumentに入ってるのitemの中身を表示
             title: Text(snapshot.data!.docs[index]["item"]),
-            subtitle: Text(snapshot.data!.docs[index]['order'].toString()),
+            subtitle: Text(
+                'Order :${snapshot.data!.docs[index]['order'].toString()}'),
             // doneの中がtrueなら何も表示しない　三項演算子
             trailing: Icon(Icons.check),
             onTap: () {},
