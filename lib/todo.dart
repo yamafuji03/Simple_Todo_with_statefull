@@ -1,3 +1,5 @@
+// import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -30,54 +32,63 @@ class _TodoState extends State<Todo> {
             ),
             // 三項演算子で、もしデータがあるなら、listview,ないならローディング中のクルクル表示
             body: buildBody(context, snapshot),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                showDialog(
-                    // おまじない
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                          // ウインドウ左上に表示させるもの
-                          title: Text("ToDo追加画面"),
-                          // 内容入力
-                          content: TextField(
-                            onChanged: (newtext) {
-                              newitem = newtext;
-                            },
-                          ),
-                          // ボタン。任意、書かなくてもいい
-                          actions: [
-                            // 「Navigator.pop(context);」は何も起きないで暗くなったページが元に戻る
-                            TextButton(
-                                child: Text("Cancel"),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                }),
-                            TextButton(
-                                child: Text("OK"),
-                                onPressed: () {
-                                  if (newitem != "") {
-                                    final randomid = db
-                                        .collection(widget.user.email!)
-                                        .doc()
-                                        .id;
+            floatingActionButton: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                FloatingActionButton(
+                  onPressed: () {},
+                  child: Icon(Icons.face),
+                ),
+                FloatingActionButton(
+                  onPressed: () {
+                    showDialog(
+                        // おまじない
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                              // ウインドウ左上に表示させるもの
+                              title: Text("ToDo追加画面"),
+                              // 内容入力
+                              content: TextField(
+                                onChanged: (newtext) {
+                                  newitem = newtext;
+                                },
+                              ),
+                              // ボタン。任意、書かなくてもいい
+                              actions: [
+                                // 「Navigator.pop(context);」は何も起きないで暗くなったページが元に戻る
+                                TextButton(
+                                    child: Text("Cancel"),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    }),
+                                TextButton(
+                                    child: Text("OK"),
+                                    onPressed: () {
+                                      if (newitem != "") {
+                                        final randomid = db
+                                            .collection(widget.user.email!)
+                                            .doc()
+                                            .id;
 
-                                    db
-                                        .collection(widget.user.email!)
-                                        .doc(randomid)
-                                        .set({
-                                      "item": newitem,
-                                      'id': randomid,
-                                      'order': snapshot.data!.docs.length
-                                    });
-                                  }
-                                  ;
-                                  Navigator.pop(context);
-                                })
-                          ]);
-                    });
-              },
-              child: Icon(Icons.add),
+                                        db
+                                            .collection(widget.user.email!)
+                                            .doc(randomid)
+                                            .set({
+                                          "item": newitem,
+                                          'id': randomid,
+                                          'order': snapshot.data!.docs.length
+                                        });
+                                      }
+                                      ;
+                                      Navigator.pop(context);
+                                    })
+                              ]);
+                        });
+                  },
+                  child: Icon(Icons.add),
+                ),
+              ],
             ),
           );
         });
@@ -172,16 +183,19 @@ class _TodoState extends State<Todo> {
                 'isCompleted': true,
               });
 
-// // forでorderを再並べ替えをする
-// //
-//  unCompletedLists = db.collection(widget.user.email!).where('isCompleted', isEqualTo: false).snapshots();
-// for (int i=0; i =< is isCompletedのfalseの最大値 ;  ){
-//   db
-//                   .collection(widget.user.email!)
-//                   .doc(snapshot.data!.docs[i])
-//                   .update({
-//                 'order': i,
-//  } );}
+// アーカイブに入れたときにorderを整えるため、forでorderを再並べ替えをする
+              final unCompletedLists = db
+                  .collection(widget.user.email!)
+                  .where('isCompleted', isEqualTo: false)
+                  .snapshots();
+
+              List<QueryDocumentSnapshot<Object?>> doc = snapshot.data!.docs;
+              int docCount = snapshot.data!.docs.length;
+              for (int i = 0; i <= docCount; i = i + 1) {
+                db.collection(widget.user.email!).doc(doc[index]).update({
+                  'order': i,
+                });
+              }
             }
           },
           child: ListTile(
