@@ -78,6 +78,8 @@ class Registration extends StatelessWidget {
                         "item": "Let's get your Todo's started",
                         "id": randomid,
                         'order': 0,
+                        'done': false,
+                        'createdAt': Timestamp.now()
                       });
 
                       print("登録完了");
