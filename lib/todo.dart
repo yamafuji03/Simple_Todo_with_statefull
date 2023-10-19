@@ -169,11 +169,16 @@ class _TodoState extends State<Todo> {
               // Firestoreからfield_idからドキュメントIDを取得してドキュメントを削除
               db.collection(widget.user.email!).doc(field_id).delete();
 
+              // documentの個数をリストで取得
               List doc = snapshot.data!.docs;
+              // デリートしたのに上のリストではデリートする前のリストを取得してしまうため、デリートした要素をリスト上でも削除する
               doc.removeAt(index);
-              int docCount = doc.length;
 
-              if (index != doc.length) {
+              // リストの個数を取得
+              int docCount = doc.length;
+              // 削除したリストのindex番号とリストの個数が違ってたら処理が実行。リストのindexとドキュメント数が一緒だったらスルーする
+              if (index != docCount) {
+                // docCount - 1分だけのorderが各docに再代入される
                 for (int i = 0; i <= docCount - 1; i = i + 1) {
                   // db.collection(widget.user.email!).doc(doc[index].id).update({
                   db.collection(widget.user.email!).doc(doc[i].id).update({
