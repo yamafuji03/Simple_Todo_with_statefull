@@ -31,6 +31,9 @@ class MyHomePage extends StatelessWidget {
   String mailAddress = "example@gmail.com";
   String password = "aaaaaa";
 
+  // String mailAddress = '';
+  // String password = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

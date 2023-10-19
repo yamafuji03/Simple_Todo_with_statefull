@@ -74,7 +74,11 @@ class Registration extends StatelessWidget {
                       FirebaseFirestore.instance
                           .collection(user.email!)
                           .doc(randomid)
-                          .set({"item": "ToDoを始めよう", "id": randomid});
+                          .set({
+                        "item": "ToDoを始めよう",
+                        "id": randomid,
+                        'order': 0,
+                      });
 
                       print("登録完了");
                       showDialog(
