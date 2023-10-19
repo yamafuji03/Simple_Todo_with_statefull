@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -164,28 +166,20 @@ class _TodoState extends State<Todo> {
             if (direction == DismissDirection.startToEnd) {
               // ランダムに生成したドキュメントIDを取得
               final field_id = snapshot.data!.docs[index].id;
-              // フィールド上にID keyとして記録したドキュメントIDを取得
-              // final field_id = snapshot.data!.docs[index]['id'];
-
               // Firestoreからfield_idからドキュメントIDを取得してドキュメントを削除
-              db.collection(widget.user.email!).doc(field_id).update({
-                'doneOrder': snapshot.data!.docs.length,
-                'isDone': true,
-              });
-
-// アーカイブに入れたときにorderを整えるため、forでorderを再並べ替えをする
-              final unCompletedLists = db
-                  .collection(widget.user.email!)
-                  .orderBy('order')
-                  .where('isDone', isEqualTo: false)
-                  .snapshots();
+              db.collection(widget.user.email!).doc(field_id).delete();
 
               List doc = snapshot.data!.docs;
-              int docCount = snapshot.data!.docs.length;
-              for (int i = 0; i <= docCount; i = i + 1) {
-                db.collection(widget.user.email!).doc(doc[index].id).update({
-                  'order': i,
-                });
+              doc.removeAt(index);
+              int docCount = doc.length;
+
+              if (index != doc.length) {
+                for (int i = 0; i <= docCount - 1; i = i + 1) {
+                  // db.collection(widget.user.email!).doc(doc[index].id).update({
+                  db.collection(widget.user.email!).doc(doc[i].id).update({
+                    'order': i,
+                  });
+                }
               }
             }
           },
