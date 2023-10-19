@@ -38,7 +38,7 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("login"),
+        title: Text("Log In Screen"),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -48,21 +48,21 @@ class MyHomePage extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  "ToDoアプリ",
+                  "Simple To Do",
                   style: TextStyle(fontSize: 50),
                 ),
-                Text("log in shitekudasai")
+                // Text("log in screen")
               ],
             ),
           ),
           CustomTextField(
-              label: "mailaddress",
+              label: "Mail address",
               onChangedFunc: (newtext) {
                 mailAddress = newtext;
               },
               isPassword: false),
           CustomTextField(
-              label: "password",
+              label: "Password",
               onChangedFunc: (newtext) {
                 password = newtext;
               },
@@ -70,13 +70,13 @@ class MyHomePage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("新規登録は"),
+              Text("Registration is"),
               TextButton(
                 onPressed: () {
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => Registration()));
                 },
-                child: Text("こちら"),
+                child: Text("Here"),
               ),
             ],
           ),
@@ -141,7 +141,7 @@ class MyHomePage extends StatelessWidget {
                 height: 50,
                 alignment: Alignment.center,
                 child: Text(
-                  "ログイン",
+                  "Log in",
                   textAlign: TextAlign.center,
                 ),
               ))

@@ -12,24 +12,24 @@ class Registration extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("新規登録"),
+        title: Text("Create Acount Screen"),
       ),
       body: Column(
         children: [
           CustomTextField(
-              label: "mail address",
+              label: "Mail address",
               onChangedFunc: (newtext) {
                 mailAddress = newtext;
               },
               isPassword: false),
           CustomTextField(
-              label: "password",
+              label: "Password",
               onChangedFunc: (newtext) {
                 password = newtext;
               },
               isPassword: true),
           CustomTextField(
-              label: "comfirm password",
+              label: "Comfirm password",
               onChangedFunc: (newtext) {
                 passwordCheck = newtext;
               },
@@ -43,9 +43,9 @@ class Registration extends StatelessWidget {
                       builder: (context) {
                         return AlertDialog(
                             // ウインドウ左上に表示させるもの
-                            title: Text("エラー"),
+                            title: Text('Error'),
                             // 内容入力
-                            content: Text("パスワードを正しく入力してください！"),
+                            content: Text('Hit your correct password'),
                             // ボタン。任意、書かなくてもいい
                             actions: [
                               TextButton(
@@ -75,7 +75,7 @@ class Registration extends StatelessWidget {
                           .collection(user.email!)
                           .doc(randomid)
                           .set({
-                        "item": "ToDoを始めよう",
+                        "item": "Let's get your Todo's started",
                         "id": randomid,
                         'order': 0,
                       });
@@ -87,9 +87,9 @@ class Registration extends StatelessWidget {
                           builder: (context) {
                             return AlertDialog(
                                 // ウインドウ左上に表示させるもの
-                                title: Text("登録しました"),
+                                title: Text('Complete'),
                                 // 内容入力
-                                content: Text("登録完了しました"),
+                                content: Text('Registration is completed'),
                                 // ボタン。任意、書かなくてもいい
                                 actions: [
                                   TextButton(
@@ -108,9 +108,9 @@ class Registration extends StatelessWidget {
                             builder: (context) {
                               return AlertDialog(
                                   // ウインドウ左上に表示させるもの
-                                  title: Text("エラー"),
+                                  title: Text("Error"),
                                   // 内容入力
-                                  content: Text("パスワードが短すぎます"),
+                                  content: Text("Password is too short"),
                                   // ボタン。任意、書かなくてもいい
                                   actions: [
                                     TextButton(
@@ -128,9 +128,10 @@ class Registration extends StatelessWidget {
                             builder: (context) {
                               return AlertDialog(
                                   // ウインドウ左上に表示させるもの
-                                  title: Text("エラー"),
+                                  title: Text("Error"),
                                   // 内容入力
-                                  content: Text("このメールアドレスは既に使用されてます"),
+                                  content:
+                                      Text("The email address is already used"),
                                   // ボタン。任意、書かなくてもいい
                                   actions: [
                                     TextButton(
@@ -149,7 +150,7 @@ class Registration extends StatelessWidget {
                           builder: (context) {
                             return AlertDialog(
                                 // ウインドウ左上に表示させるもの
-                                title: Text("エラー"),
+                                title: Text('Error'),
                                 // 内容入力
                                 content: Text(e.toString()),
                                 // ボタン。任意、書かなくてもいい
@@ -170,7 +171,7 @@ class Registration extends StatelessWidget {
                 height: 50,
                 alignment: Alignment.center,
                 child: Text(
-                  "新規登録",
+                  'Create!',
                   textAlign: TextAlign.center,
                 ),
               )),

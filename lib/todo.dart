@@ -39,7 +39,7 @@ class _TodoState extends State<Todo> {
                     builder: (context) {
                       return AlertDialog(
                           // ウインドウ左上に表示させるもの
-                          title: Text("ToDo追加画面"),
+                          title: Text("Create mode"),
                           // 内容入力
                           content: TextField(
                             onChanged: (newtext) {
@@ -191,7 +191,8 @@ class _TodoState extends State<Todo> {
               // それぞのdocumentに入ってるのitemの中身を表示
               title: Text(snapshot.data!.docs[index]["item"]),
               subtitle: Text(
-                'Created at ${DateFormat('yyyy/mm/dd HH:mm').format(snapshot.data!.docs[index]['createdAt'].toDate())}',
+                '${DateFormat('yyyy/MM/dd HH:mm').format(snapshot.data!.docs[index]['createdAt'].toDate())}',
+                style: TextStyle(fontSize: 11),
                 // textAlign: TextAlign.end,
               ),
 
@@ -208,7 +209,7 @@ class _TodoState extends State<Todo> {
                             builder: (context) {
                               return AlertDialog(
                                   // ウインドウ左上に表示させるもの
-                                  title: Text("編集画面"),
+                                  title: Text("Edit mode"),
                                   // 内容入力
                                   content: TextField(
                                     onChanged: (newText) {
