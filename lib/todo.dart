@@ -1,7 +1,4 @@
-// import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -15,7 +12,9 @@ class Todo extends StatefulWidget {
 
 class _TodoState extends State<Todo> {
   final db = FirebaseFirestore.instance;
-  String newitem = "";
+  String newItem = "";
+
+  bool isDone = false;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +43,7 @@ class _TodoState extends State<Todo> {
                           // 内容入力
                           content: TextField(
                             onChanged: (newtext) {
-                              newitem = newtext;
+                              newItem = newtext;
                             },
                           ),
                           // ボタン。任意、書かなくてもいい
@@ -58,7 +57,7 @@ class _TodoState extends State<Todo> {
                             TextButton(
                                 child: Text("OK"),
                                 onPressed: () {
-                                  if (newitem != "") {
+                                  if (newItem != "") {
                                     final randomid = db
                                         .collection(widget.user.email!)
                                         .doc()
@@ -68,9 +67,11 @@ class _TodoState extends State<Todo> {
                                         .collection(widget.user.email!)
                                         .doc(randomid)
                                         .set({
-                                      "item": newitem,
+                                      "item": newItem,
                                       'id': randomid,
                                       'order': snapshot.data!.docs.length,
+                                      'done': false,
+                                      'createdAt': DateTime.now()
                                     });
                                   }
                                   ;
@@ -149,55 +150,118 @@ class _TodoState extends State<Todo> {
       itemBuilder: (BuildContext context, int index) {
         // dismissibleでリストのスワイプを実装。keyプロパティを書く必要がある
         return Dismissible(
-          // ドキュメントIDの特定し、リストの特定をするdocIDを取得
-          key: Key(snapshot.data!.docs[index].id),
-          // 左から右にスワイプしたときの背景（削除）
-          background: Container(
-            color: Colors.red,
-            child: Icon(Icons.delete),
-            alignment: Alignment.centerLeft,
-          ),
-          // 右にスワイプしかさせない設定
-          direction: DismissDirection.startToEnd,
-          // 右から左にスワイプしたときの背景（アーカイブ）
-          // secondaryBackground: Container(color: Colors.teal),
-          onDismissed: (direction) {
-            // スワイプ方向が左から右の場合の処理
-            if (direction == DismissDirection.startToEnd) {
-              // ランダムに生成したドキュメントIDを取得
-              final field_id = snapshot.data!.docs[index].id;
-              // Firestoreからfield_idからドキュメントIDを取得してドキュメントを削除
-              db.collection(widget.user.email!).doc(field_id).delete();
+            // ドキュメントIDの特定し、リストの特定をするdocIDを取得
+            key: Key(snapshot.data!.docs[index].id),
+            // 左から右にスワイプしたときの背景（削除）
+            background: Container(
+              color: Colors.red,
+              child: Icon(Icons.delete),
+              alignment: Alignment.centerLeft,
+            ),
+            // 右にスワイプしかさせない設定
+            direction: DismissDirection.startToEnd,
+            onDismissed: (direction) {
+              // スワイプ方向が左から右の場合の処理
+              if (direction == DismissDirection.startToEnd) {
+                // ランダムに生成したドキュメントIDを取得
+                final field_id = snapshot.data!.docs[index].id;
+                // Firestoreからfield_idからドキュメントIDを取得してドキュメントを削除
+                db.collection(widget.user.email!).doc(field_id).delete();
 
-              // documentの個数をリストで取得
-              List doc = snapshot.data!.docs;
-              // デリートしたのに上のリストではデリートする前のリストを取得してしまうため、デリートした要素をリスト上でも削除する
-              doc.removeAt(index);
+                // documentの個数をリストで取得
+                List doc = snapshot.data!.docs;
+                // デリートしたのに上のリストではデリートする前のリストを取得してしまうため、デリートした要素をリスト上でも削除する
+                doc.removeAt(index);
 
-              // リストの個数を取得
-              int docCount = doc.length;
-              // 削除したリストのindex番号とリストの個数が違ってたら処理が実行。リストのindexとドキュメント数が一緒だったらスルーする
-              if (index != docCount) {
-                // docCount - 1分だけのorderが各docに再代入される
-                for (int i = 0; i <= docCount - 1; i = i + 1) {
-                  // db.collection(widget.user.email!).doc(doc[index].id).update({
-                  db.collection(widget.user.email!).doc(doc[i].id).update({
-                    'order': i,
-                  });
+                // リストの個数を取得
+                int docCount = doc.length;
+                // 削除したリストのindex番号とリストの個数が違ってたら処理が実行。リストのindexとドキュメント数が一緒だったらスルーする
+                if (index != docCount) {
+                  // docCount - 1分だけのorderが各docに再代入される
+                  for (int i = 0; i <= docCount - 1; i = i + 1) {
+                    // db.collection(widget.user.email!).doc(doc[index].id).update({
+                    db.collection(widget.user.email!).doc(doc[i].id).update({
+                      'order': i,
+                    });
+                  }
                 }
               }
-            }
-          },
-          child: ListTile(
-            // それぞのdocumentに入ってるのitemの中身を表示
-            title: Text(snapshot.data!.docs[index]["item"]),
-            subtitle: Text(
-                'Order :${snapshot.data!.docs[index]['order'].toString()}'),
-            // doneの中がtrueなら何も表示しない　三項演算子
-            trailing: Icon(Icons.check),
-            onTap: () {},
-          ),
-        );
+            },
+            child: ListTile(
+              // それぞのdocumentに入ってるのitemの中身を表示
+              title: Text(snapshot.data!.docs[index]["item"]),
+              subtitle: Text(
+                  'Created at :${snapshot.data!.docs[index]['createdAt'].toString()}'),
+              // order確認のために使用
+              // Text('Order :${snapshot.data!.docs[index]['order'].toString()}'),
+
+              trailing: Wrap(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        showDialog(
+                            // おまじない
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                  // ウインドウ左上に表示させるもの
+                                  title: Text("編集画面"),
+                                  // 内容入力
+                                  content: TextField(
+                                    onChanged: (newText) {
+                                      newItem = newText;
+                                    },
+                                  ),
+                                  // ボタン。任意、書かなくてもいい
+                                  actions: [
+                                    // 「Navigator.pop(context);」は何も起きないで暗くなったページが元に戻る
+                                    TextButton(
+                                        child: Text("Cancel"),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        }),
+                                    TextButton(
+                                        child: Text("OK"),
+                                        onPressed: () {
+                                          if (newItem != "") {
+                                            db
+                                                .collection(widget.user.email!)
+                                                .doc(snapshot
+                                                    .data!.docs[index].id)
+                                                .update({
+                                              "item": newItem,
+                                              'done': false,
+                                              'createdAt': Timestamp.now()
+                                            });
+                                          }
+                                          ;
+                                          Navigator.pop(context);
+                                        })
+                                  ]);
+                            });
+                      },
+                      icon: Icon(Icons.edit)),
+                  IconButton(
+                    onPressed: () {
+                      if (snapshot.data!.docs[index]['done'] == false) {
+                        db
+                            .collection(widget.user.email!)
+                            .doc(snapshot.data!.docs[index].id)
+                            .update({'done': true});
+                      } else {
+                        db
+                            .collection(widget.user.email!)
+                            .doc(snapshot.data!.docs[index].id)
+                            .update({'done': false});
+                      }
+                    },
+                    icon: snapshot.data!.docs[index]['done'] == true
+                        ? Icon(Icons.check)
+                        : Icon(Icons.check, color: Colors.blue.shade500),
+                  ),
+                ],
+              ),
+            ));
       },
     );
   }
