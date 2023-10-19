@@ -71,7 +71,7 @@ class _TodoState extends State<Todo> {
                                       'id': randomid,
                                       'order': snapshot.data!.docs.length,
                                       'done': false,
-                                      'createdAt': DateTime.now()
+                                      'createdAt': Timestamp.now()
                                     });
                                   }
                                   ;
@@ -190,10 +190,14 @@ class _TodoState extends State<Todo> {
             child: ListTile(
               // それぞのdocumentに入ってるのitemの中身を表示
               title: Text(snapshot.data!.docs[index]["item"]),
-              subtitle: Text(
-                  'Created at :${snapshot.data!.docs[index]['createdAt'].toString()}'),
-              // order確認のために使用
-              // Text('Order :${snapshot.data!.docs[index]['order'].toString()}'),
+              subtitle:
+                  // fixedTime = snapshot.data!.docs[index]['createdAt'],
+
+                  // Text(
+                  //     'Created at :${snapshot.data!.docs[index]['createdAt'].toString()}'),
+                  // order確認のために使用
+                  Text(
+                      'Order :${snapshot.data!.docs[index]['order'].toString()}'),
 
               trailing: Wrap(
                 children: [
