@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
 
 class Todo extends StatefulWidget {
   User user;
@@ -13,7 +14,6 @@ class Todo extends StatefulWidget {
 class _TodoState extends State<Todo> {
   final db = FirebaseFirestore.instance;
   String newItem = "";
-
   bool isDone = false;
 
   @override
@@ -190,14 +190,13 @@ class _TodoState extends State<Todo> {
             child: ListTile(
               // それぞのdocumentに入ってるのitemの中身を表示
               title: Text(snapshot.data!.docs[index]["item"]),
-              subtitle:
-                  // fixedTime = snapshot.data!.docs[index]['createdAt'],
+              subtitle: Text(
+                'Created at ${DateFormat('yyyy/mm/dd HH:mm').format(snapshot.data!.docs[index]['createdAt'].toDate())}',
+                // textAlign: TextAlign.end,
+              ),
 
-                  // Text(
-                  //     'Created at :${snapshot.data!.docs[index]['createdAt'].toString()}'),
-                  // order確認のために使用
-                  Text(
-                      'Order :${snapshot.data!.docs[index]['order'].toString()}'),
+              // order確認のために使用
+              // Text('Order :${snapshot.data!.docs[index]['order'].toString()}'),
 
               trailing: Wrap(
                 children: [
@@ -260,8 +259,8 @@ class _TodoState extends State<Todo> {
                       }
                     },
                     icon: snapshot.data!.docs[index]['done'] == true
-                        ? Icon(Icons.check)
-                        : Icon(Icons.check, color: Colors.blue.shade500),
+                        ? Icon(Icons.check, color: Colors.blue.shade500)
+                        : Icon(Icons.check),
                   ),
                 ],
               ),
