@@ -1,7 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// files
 import 'package:flutter/material.dart';
 import 'package:todo2/main.dart';
+// packages
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Registration extends StatelessWidget {
   String mailAddress = "";

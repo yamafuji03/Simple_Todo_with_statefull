@@ -1,7 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// files
 import 'package:flutter/material.dart';
+// packages
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Todo extends StatefulWidget {
   User user;

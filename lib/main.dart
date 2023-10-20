@@ -1,11 +1,11 @@
 // files
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:todo2/registration.dart';
 import 'package:todo2/firebase_options.dart';
 import 'package:todo2/todo.dart';
 // packages
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
