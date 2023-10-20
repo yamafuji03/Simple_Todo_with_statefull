@@ -19,8 +19,8 @@ class _TodoState extends State<Todo> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-        // 指定したuser.emailのデータを取得する
-        stream: db.collection(widget.user.email!).orderBy('order').snapshots(),
+        // 指定したuser.uidのデータを取得する
+        stream: db.collection(widget.user.uid).orderBy('order').snapshots(),
         // おまじない
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           return Scaffold(
@@ -58,13 +58,11 @@ class _TodoState extends State<Todo> {
                                 child: Text("OK"),
                                 onPressed: () {
                                   if (newItem != "") {
-                                    final randomid = db
-                                        .collection(widget.user.email!)
-                                        .doc()
-                                        .id;
+                                    final randomid =
+                                        db.collection(widget.user.uid).doc().id;
 
                                     db
-                                        .collection(widget.user.email!)
+                                        .collection(widget.user.uid)
                                         .doc(randomid)
                                         .set({
                                       "item": newItem,
@@ -103,7 +101,7 @@ class _TodoState extends State<Todo> {
         if (oldIndex < newIndex) {
           // 動かすドキュメントIDを取得
           final moveId = snapshot.data!.docs[oldIndex].id;
-          db.collection(widget.user.email!).doc(moveId).update({
+          db.collection(widget.user.uid).doc(moveId).update({
             // newIndexだと最大値プラス１が取れてしまうため、マイナス１で移動先リストと同じindexになるように調整
             'order': newIndex - 1,
           });
@@ -115,7 +113,7 @@ class _TodoState extends State<Todo> {
             final otherId = snapshot.data!.docs[i].id;
             // 移動させたリストと古いリストのorderが被っているから、もし移動したIDとiのIDが違うなら処理を実行とする。
             if (moveId != otherId) {
-              db.collection(widget.user.email!).doc(otherId).update({
+              db.collection(widget.user.uid).doc(otherId).update({
                 // orderをi-1にして選択されていないリストの中にあるorderを１ずらす
                 'order': i - 1,
               });
@@ -132,13 +130,13 @@ class _TodoState extends State<Todo> {
             final otherId = snapshot.data!.docs[i].id;
             // 移動させたリストと古いリストのorderが被ってないなら、orderをプラス１して並び替える。
             if (moveId != otherId) {
-              db.collection(widget.user.email!).doc(otherId).update({
+              db.collection(widget.user.uid).doc(otherId).update({
                 'order': i + 1,
               });
             }
           }
 
-          db.collection(widget.user.email!).doc(moveId).update({
+          db.collection(widget.user.uid).doc(moveId).update({
             // newIndexをそのままorder番号にする
             'order': newIndex,
           });
@@ -166,7 +164,7 @@ class _TodoState extends State<Todo> {
                 // ランダムに生成したドキュメントIDを取得
                 final field_id = snapshot.data!.docs[index].id;
                 // Firestoreからfield_idからドキュメントIDを取得してドキュメントを削除
-                db.collection(widget.user.email!).doc(field_id).delete();
+                db.collection(widget.user.uid).doc(field_id).delete();
 
                 // documentの個数をリストで取得
                 List doc = snapshot.data!.docs;
@@ -179,8 +177,7 @@ class _TodoState extends State<Todo> {
                 if (index != docCount) {
                   // docCount - 1分だけのorderが各docに再代入される
                   for (int i = 0; i <= docCount - 1; i = i + 1) {
-                    // db.collection(widget.user.email!).doc(doc[index].id).update({
-                    db.collection(widget.user.email!).doc(doc[i].id).update({
+                    db.collection(widget.user.uid).doc(doc[i].id).update({
                       'order': i,
                     });
                   }
@@ -229,7 +226,7 @@ class _TodoState extends State<Todo> {
                                         onPressed: () {
                                           if (newItem != "") {
                                             db
-                                                .collection(widget.user.email!)
+                                                .collection(widget.user.uid)
                                                 .doc(snapshot
                                                     .data!.docs[index].id)
                                                 .update({
@@ -249,12 +246,12 @@ class _TodoState extends State<Todo> {
                     onPressed: () {
                       if (snapshot.data!.docs[index]['done'] == false) {
                         db
-                            .collection(widget.user.email!)
+                            .collection(widget.user.uid)
                             .doc(snapshot.data!.docs[index].id)
                             .update({'done': true});
                       } else {
                         db
-                            .collection(widget.user.email!)
+                            .collection(widget.user.uid)
                             .doc(snapshot.data!.docs[index].id)
                             .update({'done': false});
                       }

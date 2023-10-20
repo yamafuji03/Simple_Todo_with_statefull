@@ -67,12 +67,12 @@ class Registration extends StatelessWidget {
                       final User user = userCredential.user!;
                       // ランダムに生成されたドキュメントナンバーを取得
                       final randomid = FirebaseFirestore.instance
-                          .collection(user.email!)
+                          .collection(user.uid)
                           .doc()
                           .id;
                       // 新規登録したときに例としてのtodoリストを１個作成する。このとき上で取得したDocIDをフィールド内の"id"に転記する
                       FirebaseFirestore.instance
-                          .collection(user.email!)
+                          .collection(user.uid)
                           .doc(randomid)
                           .set({
                         "item": "Let's get your Todo's started",
