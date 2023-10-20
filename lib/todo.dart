@@ -25,7 +25,7 @@ class _TodoState extends State<Todo> {
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           return Scaffold(
             appBar: AppBar(
-              title: Text("ToDo"),
+              title: Text("To Do List"),
               // 戻るボタンの非表示
               automaticallyImplyLeading: false,
             ),

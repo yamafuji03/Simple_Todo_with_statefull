@@ -66,18 +66,64 @@ class Registration extends StatelessWidget {
                       // おまじない
                       final User user = userCredential.user!;
                       // ランダムに生成されたドキュメントナンバーを取得
-                      final randomid = FirebaseFirestore.instance
+                      final randomid0 = FirebaseFirestore.instance
                           .collection(user.uid)
                           .doc()
                           .id;
+                      final randomid1 = FirebaseFirestore.instance
+                          .collection(user.uid)
+                          .doc()
+                          .id;
+                      final randomid2 = FirebaseFirestore.instance
+                          .collection(user.uid)
+                          .doc()
+                          .id;
+                      final randomid3 = FirebaseFirestore.instance
+                          .collection(user.uid)
+                          .doc()
+                          .id;
+
                       // 新規登録したときに例としてのtodoリストを１個作成する。このとき上で取得したDocIDをフィールド内の"id"に転記する
+
                       FirebaseFirestore.instance
                           .collection(user.uid)
-                          .doc(randomid)
+                          .doc(randomid0)
                           .set({
-                        "item": "Let's get your Todo's started",
-                        "id": randomid,
+                        "item": "Edit and check with the right side",
+                        "id": randomid0,
                         'order': 0,
+                        'done': false,
+                        'createdAt': Timestamp.now()
+                      });
+
+                      FirebaseFirestore.instance
+                          .collection(user.uid)
+                          .doc(randomid1)
+                          .set({
+                        "item": "Add new Todo on the bottom button",
+                        "id": randomid1,
+                        'order': 1,
+                        'done': false,
+                        'createdAt': Timestamp.now()
+                      });
+
+                      FirebaseFirestore.instance
+                          .collection(user.uid)
+                          .doc(randomid2)
+                          .set({
+                        "item": "Swipe for delete a list",
+                        "id": randomid2,
+                        'order': 2,
+                        'done': false,
+                        'createdAt': Timestamp.now()
+                      });
+                      FirebaseFirestore.instance
+                          .collection(user.uid)
+                          .doc(randomid3)
+                          .set({
+                        "item": "You can move lists. Give it a try!",
+                        "id": randomid3,
+                        'order': 3,
                         'done': false,
                         'createdAt': Timestamp.now()
                       });
