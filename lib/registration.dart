@@ -1,7 +1,8 @@
 // files
-import 'package:flutter/material.dart';
+import 'package:todo2/admob.dart';
 import 'package:todo2/main.dart';
 // packages
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -13,154 +14,133 @@ class Registration extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Create Acount Screen"),
-      ),
-      body: Column(
-        children: [
-          CustomTextField(
-              label: "Mail address",
-              onChangedFunc: (newtext) {
-                mailAddress = newtext;
-              },
-              isPassword: false),
-          CustomTextField(
-              label: "Password",
-              onChangedFunc: (newtext) {
-                password = newtext;
-              },
-              isPassword: true),
-          CustomTextField(
-              label: "Comfirm password",
-              onChangedFunc: (newtext) {
-                passwordCheck = newtext;
-              },
-              isPassword: true),
-          ElevatedButton(
-              onPressed: () async {
-                if (password != passwordCheck) {
-                  showDialog(
-                      // おまじない
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                            // ウインドウ左上に表示させるもの
-                            title: Text('Error'),
-                            // 内容入力
-                            content: Text('Hit your correct password'),
-                            // ボタン。任意、書かなくてもいい
-                            actions: [
-                              TextButton(
-                                  child: Text("OK"),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  })
-                            ]);
-                      });
-                } else {
-                  if (mailAddress != "" && password != "") {
-                    try {
-                      // メールアドレスとパスワードの登録
-                      UserCredential userCredential = await FirebaseAuth
-                          .instance
-                          .createUserWithEmailAndPassword(
-                              email: mailAddress, password: password);
-                      // おまじない
-                      final User user = userCredential.user!;
-                      // ランダムに生成されたドキュメントナンバーを取得
-                      final randomid0 = FirebaseFirestore.instance
-                          .collection(user.uid)
-                          .doc()
-                          .id;
-                      final randomid1 = FirebaseFirestore.instance
-                          .collection(user.uid)
-                          .doc()
-                          .id;
-                      final randomid2 = FirebaseFirestore.instance
-                          .collection(user.uid)
-                          .doc()
-                          .id;
-                      final randomid3 = FirebaseFirestore.instance
-                          .collection(user.uid)
-                          .doc()
-                          .id;
+        appBar: AppBar(
+          title: Text("Create Acount Screen"),
+        ),
+        body: Column(
+          children: [
+            CustomTextField(
+                label: "Mail address",
+                onChangedFunc: (newtext) {
+                  mailAddress = newtext;
+                },
+                isPassword: false),
+            CustomTextField(
+                label: "Password",
+                onChangedFunc: (newtext) {
+                  password = newtext;
+                },
+                isPassword: true),
+            CustomTextField(
+                label: "Comfirm password",
+                onChangedFunc: (newtext) {
+                  passwordCheck = newtext;
+                },
+                isPassword: true),
+            ElevatedButton(
+                onPressed: () async {
+                  if (password != passwordCheck) {
+                    showDialog(
+                        // おまじない
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                              // ウインドウ左上に表示させるもの
+                              title: Text('Error'),
+                              // 内容入力
+                              content: Text('Hit your correct password'),
+                              // ボタン。任意、書かなくてもいい
+                              actions: [
+                                TextButton(
+                                    child: Text("OK"),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    })
+                              ]);
+                        });
+                  } else {
+                    if (mailAddress != "" && password != "") {
+                      try {
+                        // メールアドレスとパスワードの登録
+                        UserCredential userCredential = await FirebaseAuth
+                            .instance
+                            .createUserWithEmailAndPassword(
+                                email: mailAddress, password: password);
+                        // おまじない
+                        final User user = userCredential.user!;
+                        // ランダムに生成されたドキュメントナンバーを取得
+                        final randomid0 = FirebaseFirestore.instance
+                            .collection(user.uid)
+                            .doc()
+                            .id;
+                        final randomid1 = FirebaseFirestore.instance
+                            .collection(user.uid)
+                            .doc()
+                            .id;
+                        final randomid2 = FirebaseFirestore.instance
+                            .collection(user.uid)
+                            .doc()
+                            .id;
+                        final randomid3 = FirebaseFirestore.instance
+                            .collection(user.uid)
+                            .doc()
+                            .id;
 
-                      // 新規登録したときに例としてのtodoリストを１個作成する。このとき上で取得したDocIDをフィールド内の"id"に転記する
+                        // 新規登録したときに例としてのtodoリストを１個作成する。このとき上で取得したDocIDをフィールド内の"id"に転記する
 
-                      FirebaseFirestore.instance
-                          .collection(user.uid)
-                          .doc(randomid0)
-                          .set({
-                        "item": "Edit and check with the right side",
-                        "id": randomid0,
-                        'order': 0,
-                        'done': false,
-                        'createdAt': Timestamp.now()
-                      });
+                        FirebaseFirestore.instance
+                            .collection(user.uid)
+                            .doc(randomid0)
+                            .set({
+                          "item": "Edit and check with the right side",
+                          "id": randomid0,
+                          'order': 0,
+                          'done': false,
+                          'createdAt': Timestamp.now()
+                        });
 
-                      FirebaseFirestore.instance
-                          .collection(user.uid)
-                          .doc(randomid1)
-                          .set({
-                        "item": "Add new Todo on the bottom button",
-                        "id": randomid1,
-                        'order': 1,
-                        'done': false,
-                        'createdAt': Timestamp.now()
-                      });
+                        FirebaseFirestore.instance
+                            .collection(user.uid)
+                            .doc(randomid1)
+                            .set({
+                          "item": "Add new Todo on the bottom button",
+                          "id": randomid1,
+                          'order': 1,
+                          'done': false,
+                          'createdAt': Timestamp.now()
+                        });
 
-                      FirebaseFirestore.instance
-                          .collection(user.uid)
-                          .doc(randomid2)
-                          .set({
-                        "item": "Swipe for delete a list",
-                        "id": randomid2,
-                        'order': 2,
-                        'done': false,
-                        'createdAt': Timestamp.now()
-                      });
-                      FirebaseFirestore.instance
-                          .collection(user.uid)
-                          .doc(randomid3)
-                          .set({
-                        "item": "You can move lists. Give it a try!",
-                        "id": randomid3,
-                        'order': 3,
-                        'done': false,
-                        'createdAt': Timestamp.now()
-                      });
+                        FirebaseFirestore.instance
+                            .collection(user.uid)
+                            .doc(randomid2)
+                            .set({
+                          "item": "Swipe for delete a list",
+                          "id": randomid2,
+                          'order': 2,
+                          'done': false,
+                          'createdAt': Timestamp.now()
+                        });
+                        FirebaseFirestore.instance
+                            .collection(user.uid)
+                            .doc(randomid3)
+                            .set({
+                          "item": "You can move lists. Give it a try!",
+                          "id": randomid3,
+                          'order': 3,
+                          'done': false,
+                          'createdAt': Timestamp.now()
+                        });
 
-                      print("登録完了");
-                      showDialog(
-                          // おまじない
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                                // ウインドウ左上に表示させるもの
-                                title: Text('Complete'),
-                                // 内容入力
-                                content: Text('Registration is completed'),
-                                // ボタン。任意、書かなくてもいい
-                                actions: [
-                                  TextButton(
-                                      child: Text("OK"),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      })
-                                ]);
-                          });
-                    } on FirebaseAuthException catch (e) {
-                      if (e.code == "weak-password") {
-                        print("パスワード短すぎ");
+                        print("登録完了");
                         showDialog(
                             // おまじない
                             context: context,
                             builder: (context) {
                               return AlertDialog(
                                   // ウインドウ左上に表示させるもの
-                                  title: Text("Error"),
+                                  title: Text('Complete'),
                                   // 内容入力
-                                  content: Text("Password is too short"),
+                                  content: Text('Registration is completed'),
                                   // ボタン。任意、書かなくてもいい
                                   actions: [
                                     TextButton(
@@ -170,18 +150,60 @@ class Registration extends StatelessWidget {
                                         })
                                   ]);
                             });
-                      } else if (e.code == "email-already-in-use") {
-                        print("メール使われてる");
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == "weak-password") {
+                          print("パスワード短すぎ");
+                          showDialog(
+                              // おまじない
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                    // ウインドウ左上に表示させるもの
+                                    title: Text("Error"),
+                                    // 内容入力
+                                    content: Text("Password is too short"),
+                                    // ボタン。任意、書かなくてもいい
+                                    actions: [
+                                      TextButton(
+                                          child: Text("OK"),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          })
+                                    ]);
+                              });
+                        } else if (e.code == "email-already-in-use") {
+                          print("メール使われてる");
+                          showDialog(
+                              // おまじない
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                    // ウインドウ左上に表示させるもの
+                                    title: Text("Error"),
+                                    // 内容入力
+                                    content: Text(
+                                        "The email address is already used"),
+                                    // ボタン。任意、書かなくてもいい
+                                    actions: [
+                                      TextButton(
+                                          child: Text("OK"),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          })
+                                    ]);
+                              });
+                        }
+                      } catch (e) {
+                        print("その他エラー");
                         showDialog(
                             // おまじない
                             context: context,
                             builder: (context) {
                               return AlertDialog(
                                   // ウインドウ左上に表示させるもの
-                                  title: Text("Error"),
+                                  title: Text('Error'),
                                   // 内容入力
-                                  content:
-                                      Text("The email address is already used"),
+                                  content: Text(e.toString()),
                                   // ボタン。任意、書かなくてもいい
                                   actions: [
                                     TextButton(
@@ -192,41 +214,20 @@ class Registration extends StatelessWidget {
                                   ]);
                             });
                       }
-                    } catch (e) {
-                      print("その他エラー");
-                      showDialog(
-                          // おまじない
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                                // ウインドウ左上に表示させるもの
-                                title: Text('Error'),
-                                // 内容入力
-                                content: Text(e.toString()),
-                                // ボタン。任意、書かなくてもいい
-                                actions: [
-                                  TextButton(
-                                      child: Text("OK"),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      })
-                                ]);
-                          });
-                    }
-                  } else {}
-                }
-              },
-              child: Container(
-                width: 200,
-                height: 50,
-                alignment: Alignment.center,
-                child: Text(
-                  'Create!',
-                  textAlign: TextAlign.center,
-                ),
-              )),
-        ],
-      ),
-    );
+                    } else {}
+                  }
+                },
+                child: Container(
+                  width: 200,
+                  height: 50,
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Create!',
+                    textAlign: TextAlign.center,
+                  ),
+                )),
+          ],
+        ),
+        bottomNavigationBar: AdMob());
   }
 }

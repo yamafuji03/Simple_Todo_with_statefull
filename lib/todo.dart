@@ -1,6 +1,7 @@
 // files
-import 'package:flutter/material.dart';
+import 'package:todo2/admob.dart';
 // packages
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -82,6 +83,7 @@ class _TodoState extends State<Todo> {
               },
               child: Icon(Icons.add),
             ),
+            bottomNavigationBar: AdMob(),
           );
         });
   }
@@ -192,7 +194,6 @@ class _TodoState extends State<Todo> {
               subtitle: Text(
                 '${DateFormat('yyyy/MM/dd HH:mm').format(snapshot.data!.docs[index]['createdAt'].toDate())}',
                 style: TextStyle(fontSize: 11),
-                // textAlign: TextAlign.end,
               ),
 
               // order確認のために使用
@@ -215,7 +216,7 @@ class _TodoState extends State<Todo> {
                                       newItem = newText;
                                     },
                                   ),
-                                  // ボタン。任意、書かなくてもいい
+                                  // ボタン。任意。
                                   actions: [
                                     // 「Navigator.pop(context);」は何も起きないで暗くなったページが元に戻る
                                     TextButton(

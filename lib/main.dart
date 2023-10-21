@@ -37,14 +37,6 @@ class MyHomePage extends StatelessWidget {
   // String mailAddress = '';
   // String password = '';
 
-// adMob用変数
-  final BannerAd myBanner = BannerAd(
-    adUnitId: 'ca-app-pub-3940256099942544/6300978111', //テスト用広告ID
-    size: AdSize.banner,
-    request: AdRequest(),
-    listener: BannerAdListener(),
-  )..load();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,7 +115,7 @@ class MyHomePage extends StatelessWidget {
                                     })
                               ]);
                         });
-                    // もしerror code　'wrong-password'ならパスワード間違ってる
+                    // もしerror code 'wrong-password'ならパスワード間違ってる
                   } else if (e.code == 'wrong-password') {
                     showDialog(
                         // おまじない
@@ -156,14 +148,10 @@ class MyHomePage extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               )),
-          // 広告追加
-          Container(
-            height: 50.0, //バナー広告のサイズ 320×50 なので
-            width: double.infinity,
-            child: AdWidget(ad: myBanner),
-          ),
         ],
       ),
+      // 広告追加
+      bottomNavigationBar: AdMob(),
     );
   }
 }
