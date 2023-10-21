@@ -1,4 +1,5 @@
 // files
+import 'package:todo2/admob.dart';
 import 'package:todo2/registration.dart';
 import 'package:todo2/firebase_options.dart';
 import 'package:todo2/todo.dart';
@@ -6,9 +7,11 @@ import 'package:todo2/todo.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -144,7 +147,8 @@ class MyHomePage extends StatelessWidget {
                   "Log in",
                   textAlign: TextAlign.center,
                 ),
-              ))
+              )),
+          // AdWidget(ad: myBanner),
         ],
       ),
     );
