@@ -1,6 +1,6 @@
 // files
 import 'package:todo2/admob.dart';
-import 'package:todo2/main.dart';
+import 'package:todo2/format.dart';
 // packages
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -92,7 +92,7 @@ class Registration extends StatelessWidget {
                             .collection(user.uid)
                             .doc(randomid0)
                             .set({
-                          "item": "Edit and check with the right side",
+                          "item": "Add new Todo on the bottom button",
                           "id": randomid0,
                           'order': 0,
                           'done': false,
@@ -103,7 +103,7 @@ class Registration extends StatelessWidget {
                             .collection(user.uid)
                             .doc(randomid1)
                             .set({
-                          "item": "Add new Todo on the bottom button",
+                          "item": "Edit and check with the right side",
                           "id": randomid1,
                           'order': 1,
                           'done': false,

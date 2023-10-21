@@ -1,5 +1,6 @@
 // files
 import 'package:todo2/admob.dart';
+import 'package:todo2/format.dart';
 import 'package:todo2/registration.dart';
 import 'package:todo2/firebase_options.dart';
 import 'package:todo2/todo.dart';
@@ -152,35 +153,6 @@ class MyHomePage extends StatelessWidget {
       ),
       // 広告追加
       bottomNavigationBar: AdMob(),
-    );
-  }
-}
-
-//textfieldのテンプレ。main screenとregistrationで使ってる
-class CustomTextField extends StatelessWidget {
-  String label;
-  void Function(String text) onChangedFunc;
-  bool isPassword;
-
-  CustomTextField(
-      {required this.label,
-      required this.onChangedFunc,
-      required this.isPassword});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(8.0),
-      child: TextField(
-        onChanged: (newtext) {
-          onChangedFunc(newtext);
-        },
-        obscureText: isPassword ? true : false,
-        decoration: InputDecoration(
-            labelText: label,
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10)))),
-      ),
     );
   }
 }
