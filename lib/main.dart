@@ -37,6 +37,13 @@ class MyHomePage extends StatelessWidget {
   // String mailAddress = '';
   // String password = '';
 
+  final BannerAd myBanner = BannerAd(
+    adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+    size: AdSize.banner,
+    request: AdRequest(),
+    listener: BannerAdListener(),
+  )..load();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -148,6 +155,11 @@ class MyHomePage extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               )),
+          Container(
+            height: 50.0, //バナー広告のサイズ 320×50 なので
+            width: double.infinity,
+            child: AdWidget(ad: myBanner),
+          ),
           // AdWidget(ad: myBanner),
         ],
       ),
