@@ -15,11 +15,15 @@ class Model {
 
   // 関数
   // ログイン関数
-  Future<UserCredential> logIn(String email, String password) async {
+  Future<User> logIn(String email, String password) async {
     UserCredential userCredential = await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
     print('ユーザー情報：${userCredential.user} 終了');
-    return userCredential;
+
+    User user = userCredential.user!;
+
+    // return userCredential;
+    return user;
   }
 }
 
@@ -53,12 +57,13 @@ class RegistrationModel {
   }
 
   // emailとpasswordをAuthに登録
-  Future<UserCredential> registerIdAndPassword(
-      String email, String password) async {
+  Future<User> registerIdAndPassword(String email, String password) async {
     UserCredential userCredential = await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password);
 
-    return userCredential;
+    User user = userCredential.user!;
+
+    return user;
   }
 }
 

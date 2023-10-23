@@ -63,17 +63,12 @@ class Registration extends StatelessWidget {
                         RegistrationModel.instance.passwordRegistration != "") {
                       try {
                         // メールアドレスとパスワードの登録
-                        UserCredential userCredential = await RegistrationModel
-                            .instance
+                        Model.instance.user = await RegistrationModel.instance
                             .registerIdAndPassword(
                                 RegistrationModel
                                     .instance.mailAddressRegistration,
                                 RegistrationModel
                                     .instance.passwordRegistration);
-
-                        // おまじない
-                        // final User user = userCredential.user!;
-                        Model.instance.user = userCredential.user!;
 
                         // ランダムに生成されたドキュメントナンバーを取得
                         final randomId0 = RegistrationModel.instance

@@ -56,12 +56,14 @@ class MyHomePage extends StatelessWidget {
           ElevatedButton(
               onPressed: () async {
                 try {
-                  // ログインさせる
-                  UserCredential userCredential = await Model.instance.logIn(
+                  // ログイン
+                  Model.instance.user = await Model.instance.logIn(
                       LogInPageModel.instance.mailAddress,
                       LogInPageModel.instance.password);
+
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => Todo(user: userCredential.user!)));
+                      // builder: (context) => Todo(user: userCredential.user!)));
+                      builder: (context) => Todo()));
                 } on FirebaseAuthException catch (e) {
                   // もしerror code　'user-not-found'ならメールアドレスがない
                   if (e.code == 'user-not-found') {

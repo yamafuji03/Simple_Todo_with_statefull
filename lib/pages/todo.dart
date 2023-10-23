@@ -9,9 +9,6 @@ import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Todo extends StatefulWidget {
-  User user;
-  Todo({required this.user});
-
   @override
   State<Todo> createState() => _TodoState();
 }
@@ -23,7 +20,7 @@ class _TodoState extends State<Todo> {
     return StreamBuilder<QuerySnapshot>(
         // 指定したuser.uidのデータを取得する
         stream: Model.instance.db
-            .collection(widget.user.uid)
+            .collection(Model.instance.user.uid)
             .orderBy('order')
             .snapshots(),
         // おまじない
@@ -64,12 +61,12 @@ class _TodoState extends State<Todo> {
                                 onPressed: () {
                                   if (TodoModel.instance.newItem != "") {
                                     final randomid = Model.instance.db
-                                        .collection(widget.user.uid)
+                                        .collection(Model.instance.user.uid)
                                         .doc()
                                         .id;
 
                                     Model.instance.db
-                                        .collection(widget.user.uid)
+                                        .collection(Model.instance.user.uid)
                                         .doc(randomid)
                                         .set({
                                       "item": TodoModel.instance.newItem,
@@ -109,7 +106,10 @@ class _TodoState extends State<Todo> {
         if (oldIndex < newIndex) {
           // 動かすドキュメントIDを取得
           final moveId = snapshot.data!.docs[oldIndex].id;
-          Model.instance.db.collection(widget.user.uid).doc(moveId).update({
+          Model.instance.db
+              .collection(Model.instance.user.uid)
+              .doc(moveId)
+              .update({
             // newIndexだと最大値プラス１が取れてしまうため、マイナス１で移動先リストと同じindexになるように調整
             'order': newIndex - 1,
           });
@@ -122,7 +122,7 @@ class _TodoState extends State<Todo> {
             // 移動させたリストと古いリストのorderが被っているから、もし移動したIDとiのIDが違うなら処理を実行とする。
             if (moveId != otherId) {
               Model.instance.db
-                  .collection(widget.user.uid)
+                  .collection(Model.instance.user.uid)
                   .doc(otherId)
                   .update({
                 // orderをi-1にして選択されていないリストの中にあるorderを１ずらす
@@ -142,7 +142,7 @@ class _TodoState extends State<Todo> {
             // 移動させたリストと古いリストのorderが被ってないなら、orderをプラス１して並び替える。
             if (moveId != otherId) {
               Model.instance.db
-                  .collection(widget.user.uid)
+                  .collection(Model.instance.user.uid)
                   .doc(otherId)
                   .update({
                 'order': i + 1,
@@ -150,7 +150,10 @@ class _TodoState extends State<Todo> {
             }
           }
 
-          Model.instance.db.collection(widget.user.uid).doc(moveId).update({
+          Model.instance.db
+              .collection(Model.instance.user.uid)
+              .doc(moveId)
+              .update({
             // newIndexをそのままorder番号にする
             'order': newIndex,
           });
@@ -179,7 +182,7 @@ class _TodoState extends State<Todo> {
                 final field_id = snapshot.data!.docs[index].id;
                 // Firestoreからfield_idからドキュメントIDを取得してドキュメントを削除
                 Model.instance.db
-                    .collection(widget.user.uid)
+                    .collection(Model.instance.user.uid)
                     .doc(field_id)
                     .delete();
 
@@ -195,7 +198,7 @@ class _TodoState extends State<Todo> {
                   // docCount - 1分だけのorderが各docに再代入される
                   for (int i = 0; i <= docCount - 1; i = i + 1) {
                     Model.instance.db
-                        .collection(widget.user.uid)
+                        .collection(Model.instance.user.uid)
                         .doc(doc[i].id)
                         .update({
                       'order': i,
@@ -246,7 +249,8 @@ class _TodoState extends State<Todo> {
                                           if (TodoModel.instance.newItem !=
                                               "") {
                                             Model.instance.db
-                                                .collection(widget.user.uid)
+                                                .collection(
+                                                    Model.instance.user.uid)
                                                 .doc(snapshot
                                                     .data!.docs[index].id)
                                                 .update({
@@ -267,12 +271,12 @@ class _TodoState extends State<Todo> {
                     onPressed: () {
                       if (snapshot.data!.docs[index]['done'] == false) {
                         Model.instance.db
-                            .collection(widget.user.uid)
+                            .collection(Model.instance.user.uid)
                             .doc(snapshot.data!.docs[index].id)
                             .update({'done': true});
                       } else {
                         Model.instance.db
-                            .collection(widget.user.uid)
+                            .collection(Model.instance.user.uid)
                             .doc(snapshot.data!.docs[index].id)
                             .update({'done': false});
                       }
