@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:todo2/variable.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,12 +33,6 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  String mailAddress = "example@gmail.com";
-  String password = "aaaaaa";
-
-  // String mailAddress = '';
-  // String password = '';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,13 +57,13 @@ class MyHomePage extends StatelessWidget {
           CustomTextField(
               label: "Mail address",
               onChangedFunc: (newtext) {
-                mailAddress = newtext;
+                Variable.instance.mailAddress = newtext;
               },
               isPassword: false),
           CustomTextField(
               label: "Password",
               onChangedFunc: (newtext) {
-                password = newtext;
+                Variable.instance.password = newtext;
               },
               isPassword: true),
           Row(
@@ -90,7 +85,8 @@ class MyHomePage extends StatelessWidget {
                   // ログインさせる
                   UserCredential userCredential = await FirebaseAuth.instance
                       .signInWithEmailAndPassword(
-                          email: mailAddress, password: password);
+                          email: Variable.instance.mailAddress,
+                          password: Variable.instance.password);
                   print(userCredential.user);
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => Todo(user: userCredential.user!)));

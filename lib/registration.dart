@@ -5,12 +5,9 @@ import 'package:todo2/format.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:todo2/variable.dart';
 
 class Registration extends StatelessWidget {
-  String mailAddress = "";
-  String password = "";
-  String passwordCheck = "";
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,24 +19,25 @@ class Registration extends StatelessWidget {
             CustomTextField(
                 label: "Mail address",
                 onChangedFunc: (newtext) {
-                  mailAddress = newtext;
+                  Variable.instance.mailAddressRegistration = newtext;
                 },
                 isPassword: false),
             CustomTextField(
                 label: "Password",
                 onChangedFunc: (newtext) {
-                  password = newtext;
+                  Variable.instance.passwordRegistration = newtext;
                 },
                 isPassword: true),
             CustomTextField(
                 label: "Comfirm password",
                 onChangedFunc: (newtext) {
-                  passwordCheck = newtext;
+                  Variable.instance.passwordCheckRegistration = newtext;
                 },
                 isPassword: true),
             ElevatedButton(
                 onPressed: () async {
-                  if (password != passwordCheck) {
+                  if (Variable.instance.passwordRegistration !=
+                      Variable.instance.passwordCheckRegistration) {
                     showDialog(
                         // おまじない
                         context: context,
@@ -59,13 +57,17 @@ class Registration extends StatelessWidget {
                               ]);
                         });
                   } else {
-                    if (mailAddress != "" && password != "") {
+                    if (Variable.instance.mailAddressRegistration != "" &&
+                        Variable.instance.passwordRegistration != "") {
                       try {
                         // メールアドレスとパスワードの登録
                         UserCredential userCredential = await FirebaseAuth
                             .instance
                             .createUserWithEmailAndPassword(
-                                email: mailAddress, password: password);
+                                email:
+                                    Variable.instance.mailAddressRegistration,
+                                password:
+                                    Variable.instance.passwordRegistration);
                         // おまじない
                         final User user = userCredential.user!;
                         // ランダムに生成されたドキュメントナンバーを取得
