@@ -11,8 +11,8 @@ class AdMob extends StatelessWidget {
 // adMob用変数
     BannerAd myBanner = BannerAd(
       adUnitId: Platform.isAndroid
-          ? 'ca-app-pub-3940256099942544/6300978111' // android用ID
-          : 'ca-app-pub-3940256099942544/2934735716', // ios用のID
+          ? 'ca-app-pub-3940256099942544/6300978111' // android用バナーテストID
+          : 'ca-app-pub-3940256099942544/2934735716', // ios用のバナーテストID
       size: AdSize.banner,
       request: AdRequest(),
       listener: BannerAdListener(),

@@ -1,6 +1,6 @@
 // files
-import 'package:todo2/admob.dart';
-import 'package:todo2/variable_function.dart';
+import 'package:todo2/middle/admob.dart';
+import 'package:todo2/model/variable_function.dart';
 
 // packages
 import 'package:flutter/material.dart';

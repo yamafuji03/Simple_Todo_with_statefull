@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:todo2/admob.dart';
-import 'package:todo2/class_format.dart';
+import 'package:todo2/middle/admob.dart';
+import 'package:todo2/middle/class_format.dart';
 import 'package:todo2/pages/registration.dart';
 import 'package:todo2/pages/todo.dart';
-import 'package:todo2/variable_function.dart';
+import 'package:todo2/model/variable_function.dart';
 
 class MyHomePage extends StatelessWidget {
   @override
