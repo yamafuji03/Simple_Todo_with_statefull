@@ -1,6 +1,6 @@
 // files
 import 'package:todo2/admob.dart';
-import 'package:todo2/format.dart';
+import 'package:todo2/class_format.dart';
 import 'package:todo2/registration.dart';
 import 'package:todo2/firebase_options.dart';
 import 'package:todo2/todo.dart';
@@ -87,7 +87,7 @@ class MyHomePage extends StatelessWidget {
                       .signInWithEmailAndPassword(
                           email: Variable.instance.mailAddress,
                           password: Variable.instance.password);
-                  print(userCredential.user);
+                  print('ユーザー情報：${userCredential.user} 終了');
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => Todo(user: userCredential.user!)));
                 } on FirebaseAuthException catch (e) {

@@ -1,11 +1,11 @@
 // files
 import 'package:todo2/admob.dart';
-import 'package:todo2/format.dart';
+import 'package:todo2/class_format.dart';
 // packages
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:todo2/variable.dart';
+import 'package:todo2/variable_function.dart';
 
 class Registration extends StatelessWidget {
   @override
@@ -71,26 +71,14 @@ class Registration extends StatelessWidget {
                         // おまじない
                         final User user = userCredential.user!;
                         // ランダムに生成されたドキュメントナンバーを取得
-                        final randomid0 = FirebaseFirestore.instance
-                            .collection(user.uid)
-                            .doc()
-                            .id;
-                        final randomid1 = FirebaseFirestore.instance
-                            .collection(user.uid)
-                            .doc()
-                            .id;
-                        final randomid2 = FirebaseFirestore.instance
-                            .collection(user.uid)
-                            .doc()
-                            .id;
-                        final randomid3 = FirebaseFirestore.instance
-                            .collection(user.uid)
-                            .doc()
-                            .id;
+                        final randomid0 = Variable.instance.makeRandomId(user);
+                        final randomid1 = Variable.instance.makeRandomId(user);
+                        final randomid2 = Variable.instance.makeRandomId(user);
+                        final randomid3 = Variable.instance.makeRandomId(user);
 
                         // 新規登録したときに例としてのtodoリストを１個作成する。このとき上で取得したDocIDをフィールド内の"id"に転記する
 
-                        FirebaseFirestore.instance
+                        Variable.instance.db
                             .collection(user.uid)
                             .doc(randomid0)
                             .set({
@@ -101,7 +89,7 @@ class Registration extends StatelessWidget {
                           'createdAt': Timestamp.now()
                         });
 
-                        FirebaseFirestore.instance
+                        Variable.instance.db
                             .collection(user.uid)
                             .doc(randomid1)
                             .set({
@@ -112,7 +100,7 @@ class Registration extends StatelessWidget {
                           'createdAt': Timestamp.now()
                         });
 
-                        FirebaseFirestore.instance
+                        Variable.instance.db
                             .collection(user.uid)
                             .doc(randomid2)
                             .set({
@@ -122,7 +110,7 @@ class Registration extends StatelessWidget {
                           'done': false,
                           'createdAt': Timestamp.now()
                         });
-                        FirebaseFirestore.instance
+                        Variable.instance.db
                             .collection(user.uid)
                             .doc(randomid3)
                             .set({
