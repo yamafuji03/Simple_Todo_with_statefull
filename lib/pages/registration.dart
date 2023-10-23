@@ -19,25 +19,26 @@ class Registration extends StatelessWidget {
             CustomTextField(
                 label: "Mail address",
                 onChangedFunc: (newtext) {
-                  Model.instance.mailAddressRegistration = newtext;
+                  RegistrationModel.instance.mailAddressRegistration = newtext;
                 },
                 isPassword: false),
             CustomTextField(
                 label: "Password",
                 onChangedFunc: (newtext) {
-                  Model.instance.passwordRegistration = newtext;
+                  RegistrationModel.instance.passwordRegistration = newtext;
                 },
                 isPassword: true),
             CustomTextField(
                 label: "Comfirm password",
                 onChangedFunc: (newtext) {
-                  Model.instance.passwordCheckRegistration = newtext;
+                  RegistrationModel.instance.passwordCheckRegistration =
+                      newtext;
                 },
                 isPassword: true),
             ElevatedButton(
                 onPressed: () async {
-                  if (Model.instance.passwordRegistration !=
-                      Model.instance.passwordCheckRegistration) {
+                  if (RegistrationModel.instance.passwordRegistration !=
+                      RegistrationModel.instance.passwordCheckRegistration) {
                     showDialog(
                         // おまじない
                         context: context,
@@ -57,31 +58,38 @@ class Registration extends StatelessWidget {
                               ]);
                         });
                   } else {
-                    if (Model.instance.mailAddressRegistration != "" &&
-                        Model.instance.passwordRegistration != "") {
+                    if (RegistrationModel.instance.mailAddressRegistration !=
+                            "" &&
+                        RegistrationModel.instance.passwordRegistration != "") {
                       try {
                         // メールアドレスとパスワードの登録
                         UserCredential userCredential = await FirebaseAuth
                             .instance
                             .createUserWithEmailAndPassword(
-                                email: Model.instance.mailAddressRegistration,
-                                password: Model.instance.passwordRegistration);
+                                email: RegistrationModel
+                                    .instance.mailAddressRegistration,
+                                password: RegistrationModel
+                                    .instance.passwordRegistration);
                         // おまじない
                         final User user = userCredential.user!;
                         // ランダムに生成されたドキュメントナンバーを取得
-                        final randomid0 = Model.instance.makeRandomId(user);
-                        final randomid1 = Model.instance.makeRandomId(user);
-                        final randomid2 = Model.instance.makeRandomId(user);
-                        final randomid3 = Model.instance.makeRandomId(user);
+                        final randomId0 =
+                            RegistrationModel.instance.makeRandomId(user);
+                        final randomId1 =
+                            RegistrationModel.instance.makeRandomId(user);
+                        final randomId2 =
+                            RegistrationModel.instance.makeRandomId(user);
+                        final randomId3 =
+                            RegistrationModel.instance.makeRandomId(user);
 
                         // 新規登録したときに例としてのtodoリストを１個作成する。このとき上で取得したDocIDをフィールド内の"id"に転記する
 
                         Model.instance.db
                             .collection(user.uid)
-                            .doc(randomid0)
+                            .doc(randomId0)
                             .set({
                           "item": "Add new Todo on the bottom button",
-                          "id": randomid0,
+                          "id": randomId0,
                           'order': 0,
                           'done': false,
                           'createdAt': Timestamp.now()
@@ -89,10 +97,10 @@ class Registration extends StatelessWidget {
 
                         Model.instance.db
                             .collection(user.uid)
-                            .doc(randomid1)
+                            .doc(randomId1)
                             .set({
                           "item": "Edit and check with the right side",
-                          "id": randomid1,
+                          "id": randomId1,
                           'order': 1,
                           'done': false,
                           'createdAt': Timestamp.now()
@@ -100,20 +108,20 @@ class Registration extends StatelessWidget {
 
                         Model.instance.db
                             .collection(user.uid)
-                            .doc(randomid2)
+                            .doc(randomId2)
                             .set({
                           "item": "Swipe for delete a list",
-                          "id": randomid2,
+                          "id": randomId2,
                           'order': 2,
                           'done': false,
                           'createdAt': Timestamp.now()
                         });
                         Model.instance.db
                             .collection(user.uid)
-                            .doc(randomid3)
+                            .doc(randomId3)
                             .set({
                           "item": "You can move lists. Give it a try!",
-                          "id": randomid3,
+                          "id": randomId3,
                           'order': 3,
                           'done': false,
                           'createdAt': Timestamp.now()

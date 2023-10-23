@@ -48,7 +48,7 @@ class _TodoState extends State<Todo> {
                           // 内容入力
                           content: TextField(
                             onChanged: (newtext) {
-                              Model.instance.newItem = newtext;
+                              TodoModel.instance.newItem = newtext;
                             },
                           ),
                           // ボタン。任意、書かなくてもいい
@@ -62,7 +62,7 @@ class _TodoState extends State<Todo> {
                             TextButton(
                                 child: Text("OK"),
                                 onPressed: () {
-                                  if (Model.instance.newItem != "") {
+                                  if (TodoModel.instance.newItem != "") {
                                     final randomid = Model.instance.db
                                         .collection(widget.user.uid)
                                         .doc()
@@ -72,7 +72,7 @@ class _TodoState extends State<Todo> {
                                         .collection(widget.user.uid)
                                         .doc(randomid)
                                         .set({
-                                      "item": Model.instance.newItem,
+                                      "item": TodoModel.instance.newItem,
                                       'id': randomid,
                                       'order': snapshot.data!.docs.length,
                                       'done': false,
@@ -229,7 +229,7 @@ class _TodoState extends State<Todo> {
                                   // 内容入力
                                   content: TextField(
                                     onChanged: (newText) {
-                                      Model.instance.newItem = newText;
+                                      TodoModel.instance.newItem = newText;
                                     },
                                   ),
                                   // ボタン。任意。
@@ -243,13 +243,15 @@ class _TodoState extends State<Todo> {
                                     TextButton(
                                         child: Text("OK"),
                                         onPressed: () {
-                                          if (Model.instance.newItem != "") {
+                                          if (TodoModel.instance.newItem !=
+                                              "") {
                                             Model.instance.db
                                                 .collection(widget.user.uid)
                                                 .doc(snapshot
                                                     .data!.docs[index].id)
                                                 .update({
-                                              "item": Model.instance.newItem,
+                                              "item":
+                                                  TodoModel.instance.newItem,
                                               'done': false,
                                               'createdAt': Timestamp.now()
                                             });
