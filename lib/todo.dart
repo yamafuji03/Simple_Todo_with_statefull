@@ -1,6 +1,7 @@
 // files
-import 'package:todo2/variable.dart';
 import 'package:todo2/admob.dart';
+import 'package:todo2/variable_function.dart';
+
 // packages
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,7 +22,7 @@ class _TodoState extends State<Todo> {
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
         // 指定したuser.uidのデータを取得する
-        stream: Variable.instance.db
+        stream: Model.instance.db
             .collection(widget.user.uid)
             .orderBy('order')
             .snapshots(),
@@ -47,7 +48,7 @@ class _TodoState extends State<Todo> {
                           // 内容入力
                           content: TextField(
                             onChanged: (newtext) {
-                              Variable.instance.newItem = newtext;
+                              Model.instance.newItem = newtext;
                             },
                           ),
                           // ボタン。任意、書かなくてもいい
@@ -61,17 +62,17 @@ class _TodoState extends State<Todo> {
                             TextButton(
                                 child: Text("OK"),
                                 onPressed: () {
-                                  if (Variable.instance.newItem != "") {
-                                    final randomid = Variable.instance.db
+                                  if (Model.instance.newItem != "") {
+                                    final randomid = Model.instance.db
                                         .collection(widget.user.uid)
                                         .doc()
                                         .id;
 
-                                    Variable.instance.db
+                                    Model.instance.db
                                         .collection(widget.user.uid)
                                         .doc(randomid)
                                         .set({
-                                      "item": Variable.instance.newItem,
+                                      "item": Model.instance.newItem,
                                       'id': randomid,
                                       'order': snapshot.data!.docs.length,
                                       'done': false,
@@ -108,7 +109,7 @@ class _TodoState extends State<Todo> {
         if (oldIndex < newIndex) {
           // 動かすドキュメントIDを取得
           final moveId = snapshot.data!.docs[oldIndex].id;
-          Variable.instance.db.collection(widget.user.uid).doc(moveId).update({
+          Model.instance.db.collection(widget.user.uid).doc(moveId).update({
             // newIndexだと最大値プラス１が取れてしまうため、マイナス１で移動先リストと同じindexになるように調整
             'order': newIndex - 1,
           });
@@ -120,7 +121,7 @@ class _TodoState extends State<Todo> {
             final otherId = snapshot.data!.docs[i].id;
             // 移動させたリストと古いリストのorderが被っているから、もし移動したIDとiのIDが違うなら処理を実行とする。
             if (moveId != otherId) {
-              Variable.instance.db
+              Model.instance.db
                   .collection(widget.user.uid)
                   .doc(otherId)
                   .update({
@@ -140,7 +141,7 @@ class _TodoState extends State<Todo> {
             final otherId = snapshot.data!.docs[i].id;
             // 移動させたリストと古いリストのorderが被ってないなら、orderをプラス１して並び替える。
             if (moveId != otherId) {
-              Variable.instance.db
+              Model.instance.db
                   .collection(widget.user.uid)
                   .doc(otherId)
                   .update({
@@ -149,7 +150,7 @@ class _TodoState extends State<Todo> {
             }
           }
 
-          Variable.instance.db.collection(widget.user.uid).doc(moveId).update({
+          Model.instance.db.collection(widget.user.uid).doc(moveId).update({
             // newIndexをそのままorder番号にする
             'order': newIndex,
           });
@@ -177,7 +178,7 @@ class _TodoState extends State<Todo> {
                 // ランダムに生成したドキュメントIDを取得
                 final field_id = snapshot.data!.docs[index].id;
                 // Firestoreからfield_idからドキュメントIDを取得してドキュメントを削除
-                Variable.instance.db
+                Model.instance.db
                     .collection(widget.user.uid)
                     .doc(field_id)
                     .delete();
@@ -193,7 +194,7 @@ class _TodoState extends State<Todo> {
                 if (index != docCount) {
                   // docCount - 1分だけのorderが各docに再代入される
                   for (int i = 0; i <= docCount - 1; i = i + 1) {
-                    Variable.instance.db
+                    Model.instance.db
                         .collection(widget.user.uid)
                         .doc(doc[i].id)
                         .update({
@@ -228,7 +229,7 @@ class _TodoState extends State<Todo> {
                                   // 内容入力
                                   content: TextField(
                                     onChanged: (newText) {
-                                      Variable.instance.newItem = newText;
+                                      Model.instance.newItem = newText;
                                     },
                                   ),
                                   // ボタン。任意。
@@ -242,13 +243,13 @@ class _TodoState extends State<Todo> {
                                     TextButton(
                                         child: Text("OK"),
                                         onPressed: () {
-                                          if (Variable.instance.newItem != "") {
-                                            Variable.instance.db
+                                          if (Model.instance.newItem != "") {
+                                            Model.instance.db
                                                 .collection(widget.user.uid)
                                                 .doc(snapshot
                                                     .data!.docs[index].id)
                                                 .update({
-                                              "item": Variable.instance.newItem,
+                                              "item": Model.instance.newItem,
                                               'done': false,
                                               'createdAt': Timestamp.now()
                                             });
@@ -263,12 +264,12 @@ class _TodoState extends State<Todo> {
                   IconButton(
                     onPressed: () {
                       if (snapshot.data!.docs[index]['done'] == false) {
-                        Variable.instance.db
+                        Model.instance.db
                             .collection(widget.user.uid)
                             .doc(snapshot.data!.docs[index].id)
                             .update({'done': true});
                       } else {
-                        Variable.instance.db
+                        Model.instance.db
                             .collection(widget.user.uid)
                             .doc(snapshot.data!.docs[index].id)
                             .update({'done': false});

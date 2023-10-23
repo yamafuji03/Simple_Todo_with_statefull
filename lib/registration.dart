@@ -19,25 +19,25 @@ class Registration extends StatelessWidget {
             CustomTextField(
                 label: "Mail address",
                 onChangedFunc: (newtext) {
-                  Variable.instance.mailAddressRegistration = newtext;
+                  Model.instance.mailAddressRegistration = newtext;
                 },
                 isPassword: false),
             CustomTextField(
                 label: "Password",
                 onChangedFunc: (newtext) {
-                  Variable.instance.passwordRegistration = newtext;
+                  Model.instance.passwordRegistration = newtext;
                 },
                 isPassword: true),
             CustomTextField(
                 label: "Comfirm password",
                 onChangedFunc: (newtext) {
-                  Variable.instance.passwordCheckRegistration = newtext;
+                  Model.instance.passwordCheckRegistration = newtext;
                 },
                 isPassword: true),
             ElevatedButton(
                 onPressed: () async {
-                  if (Variable.instance.passwordRegistration !=
-                      Variable.instance.passwordCheckRegistration) {
+                  if (Model.instance.passwordRegistration !=
+                      Model.instance.passwordCheckRegistration) {
                     showDialog(
                         // おまじない
                         context: context,
@@ -57,28 +57,26 @@ class Registration extends StatelessWidget {
                               ]);
                         });
                   } else {
-                    if (Variable.instance.mailAddressRegistration != "" &&
-                        Variable.instance.passwordRegistration != "") {
+                    if (Model.instance.mailAddressRegistration != "" &&
+                        Model.instance.passwordRegistration != "") {
                       try {
                         // メールアドレスとパスワードの登録
                         UserCredential userCredential = await FirebaseAuth
                             .instance
                             .createUserWithEmailAndPassword(
-                                email:
-                                    Variable.instance.mailAddressRegistration,
-                                password:
-                                    Variable.instance.passwordRegistration);
+                                email: Model.instance.mailAddressRegistration,
+                                password: Model.instance.passwordRegistration);
                         // おまじない
                         final User user = userCredential.user!;
                         // ランダムに生成されたドキュメントナンバーを取得
-                        final randomid0 = Variable.instance.makeRandomId(user);
-                        final randomid1 = Variable.instance.makeRandomId(user);
-                        final randomid2 = Variable.instance.makeRandomId(user);
-                        final randomid3 = Variable.instance.makeRandomId(user);
+                        final randomid0 = Model.instance.makeRandomId(user);
+                        final randomid1 = Model.instance.makeRandomId(user);
+                        final randomid2 = Model.instance.makeRandomId(user);
+                        final randomid3 = Model.instance.makeRandomId(user);
 
                         // 新規登録したときに例としてのtodoリストを１個作成する。このとき上で取得したDocIDをフィールド内の"id"に転記する
 
-                        Variable.instance.db
+                        Model.instance.db
                             .collection(user.uid)
                             .doc(randomid0)
                             .set({
@@ -89,7 +87,7 @@ class Registration extends StatelessWidget {
                           'createdAt': Timestamp.now()
                         });
 
-                        Variable.instance.db
+                        Model.instance.db
                             .collection(user.uid)
                             .doc(randomid1)
                             .set({
@@ -100,7 +98,7 @@ class Registration extends StatelessWidget {
                           'createdAt': Timestamp.now()
                         });
 
-                        Variable.instance.db
+                        Model.instance.db
                             .collection(user.uid)
                             .doc(randomid2)
                             .set({
@@ -110,7 +108,7 @@ class Registration extends StatelessWidget {
                           'done': false,
                           'createdAt': Timestamp.now()
                         });
-                        Variable.instance.db
+                        Model.instance.db
                             .collection(user.uid)
                             .doc(randomid3)
                             .set({

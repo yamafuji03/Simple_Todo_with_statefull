@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:todo2/variable.dart';
+import 'package:todo2/variable_function.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,13 +57,13 @@ class MyHomePage extends StatelessWidget {
           CustomTextField(
               label: "Mail address",
               onChangedFunc: (newtext) {
-                Variable.instance.mailAddress = newtext;
+                Model.instance.mailAddress = newtext;
               },
               isPassword: false),
           CustomTextField(
               label: "Password",
               onChangedFunc: (newtext) {
-                Variable.instance.password = newtext;
+                Model.instance.password = newtext;
               },
               isPassword: true),
           Row(
@@ -85,8 +85,8 @@ class MyHomePage extends StatelessWidget {
                   // ログインさせる
                   UserCredential userCredential = await FirebaseAuth.instance
                       .signInWithEmailAndPassword(
-                          email: Variable.instance.mailAddress,
-                          password: Variable.instance.password);
+                          email: Model.instance.mailAddress,
+                          password: Model.instance.password);
                   print('ユーザー情報：${userCredential.user} 終了');
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => Todo(user: userCredential.user!)));
