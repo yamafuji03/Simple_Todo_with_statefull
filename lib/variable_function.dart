@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 // 全てのページに使われてるもの
 class Model {
@@ -18,12 +17,17 @@ class Model {
   Future<User> logIn(String email, String password) async {
     UserCredential userCredential = await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
+
     print('ユーザー情報：${userCredential.user} 終了');
 
     User user = userCredential.user!;
-
-    // return userCredential;
     return user;
+  }
+
+  // ドキュメントのランダムID作成
+  String makeRandomId(User user) {
+    // 個々のuid内でランダムIDを生成し、戻り値をStringとして返す
+    return FirebaseFirestore.instance.collection(user.uid).doc().id;
   }
 }
 
@@ -49,12 +53,7 @@ class RegistrationModel {
   String passwordRegistration = '';
   String passwordCheckRegistration = '';
 
-  // // 関数
-  // ドキュメントのランダムID作成
-  String makeRandomId(User user) {
-    // 個々のuid内でランダムIDを生成し、戻り値をStringとして返す
-    return FirebaseFirestore.instance.collection(user.uid).doc().id;
-  }
+  // 関数
 
   // emailとpasswordをAuthに登録
   Future<User> registerIdAndPassword(String email, String password) async {

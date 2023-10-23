@@ -14,7 +14,6 @@ class Todo extends StatefulWidget {
 }
 
 class _TodoState extends State<Todo> {
-  // String newItem = "";
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -60,17 +59,15 @@ class _TodoState extends State<Todo> {
                                 child: Text("OK"),
                                 onPressed: () {
                                   if (TodoModel.instance.newItem != "") {
-                                    final randomid = Model.instance.db
-                                        .collection(Model.instance.user.uid)
-                                        .doc()
-                                        .id;
+                                    final randomId = Model.instance
+                                        .makeRandomId(Model.instance.user);
 
                                     Model.instance.db
                                         .collection(Model.instance.user.uid)
-                                        .doc(randomid)
+                                        .doc(randomId)
                                         .set({
                                       "item": TodoModel.instance.newItem,
-                                      'id': randomid,
+                                      'id': randomId,
                                       'order': snapshot.data!.docs.length,
                                       'done': false,
                                       'createdAt': Timestamp.now()

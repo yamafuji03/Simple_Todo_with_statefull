@@ -61,9 +61,8 @@ class MyHomePage extends StatelessWidget {
                       LogInPageModel.instance.mailAddress,
                       LogInPageModel.instance.password);
 
-                  Navigator.of(context).push(MaterialPageRoute(
-                      // builder: (context) => Todo(user: userCredential.user!)));
-                      builder: (context) => Todo()));
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => Todo()));
                 } on FirebaseAuthException catch (e) {
                   // もしerror code　'user-not-found'ならメールアドレスがない
                   if (e.code == 'user-not-found') {

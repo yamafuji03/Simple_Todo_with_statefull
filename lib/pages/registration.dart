@@ -71,17 +71,16 @@ class Registration extends StatelessWidget {
                                     .instance.passwordRegistration);
 
                         // ランダムに生成されたドキュメントナンバーを取得
-                        final randomId0 = RegistrationModel.instance
-                            .makeRandomId(Model.instance.user);
-                        final randomId1 = RegistrationModel.instance
-                            .makeRandomId(Model.instance.user);
-                        final randomId2 = RegistrationModel.instance
-                            .makeRandomId(Model.instance.user);
-                        final randomId3 = RegistrationModel.instance
-                            .makeRandomId(Model.instance.user);
+                        final randomId0 =
+                            Model.instance.makeRandomId(Model.instance.user);
+                        final randomId1 =
+                            Model.instance.makeRandomId(Model.instance.user);
+                        final randomId2 =
+                            Model.instance.makeRandomId(Model.instance.user);
+                        final randomId3 =
+                            Model.instance.makeRandomId(Model.instance.user);
 
                         // 新規登録したときに例としてのtodoリストを１個作成する。このとき上で取得したDocIDをフィールド内の"id"に転記する
-
                         Model.instance.db
                             .collection(Model.instance.user.uid)
                             .doc(randomId0)
