@@ -159,10 +159,8 @@ class _TodoState extends State<Todo> {
       itemCount: snapshot.data!.docs.length,
       // itemCount分indexが回る
       itemBuilder: (BuildContext context, int index) {
-        // 毎回「snapshot.data!.docs」と書くのはだるいので省略させる。ドキュメント１個を取るので型は「DocumentSnapshot」になる
+        // 毎回「snapshot.data!.docs」と書くのはだるいので省略させる。
         DocumentSnapshot doc = snapshot.data!.docs[index];
-//  Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;もう一剥きさせるとMap<String, dynamic>になる
-
         // dismissibleでリストのスワイプを実装。keyプロパティを書く必要がある
         return Dismissible(
             // ドキュメントIDの特定し、リストの特定をするdocIDを取得
