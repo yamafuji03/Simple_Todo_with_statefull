@@ -4,7 +4,6 @@ import 'package:todo2/variable_function.dart';
 
 // packages
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -160,10 +159,14 @@ class _TodoState extends State<Todo> {
       itemCount: snapshot.data!.docs.length,
       // itemCount分indexが回る
       itemBuilder: (BuildContext context, int index) {
+        // 毎回「snapshot.data!.docs」と書くのはだるいので省略させる。ドキュメント１個を取るので型は「DocumentSnapshot」になる
+        DocumentSnapshot doc = snapshot.data!.docs[index];
+//  Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;もう一剥きさせるとMap<String, dynamic>になる
+
         // dismissibleでリストのスワイプを実装。keyプロパティを書く必要がある
         return Dismissible(
             // ドキュメントIDの特定し、リストの特定をするdocIDを取得
-            key: Key(snapshot.data!.docs[index].id),
+            key: Key(doc.id),
             // 左から右にスワイプしたときの背景（削除）
             background: Container(
               color: Colors.red,
@@ -176,27 +179,32 @@ class _TodoState extends State<Todo> {
               // スワイプ方向が左から右の場合の処理
               if (direction == DismissDirection.startToEnd) {
                 // ランダムに生成したドキュメントIDを取得
-                final field_id = snapshot.data!.docs[index].id;
+                final field_id = doc.id;
                 // Firestoreからfield_idからドキュメントIDを取得してドキュメントを削除
                 Model.instance.db
                     .collection(Model.instance.user.uid)
                     .doc(field_id)
                     .delete();
 
+                // 最終的にはしたでいける。あと変数変えるだけ
                 // documentの個数をリストで取得
-                List doc = snapshot.data!.docs;
+                // List listDoc = snapshot.data!.docs; //queryスナップショットでやったら？
+                List<DocumentSnapshot> listDoc =
+                    snapshot.data!.docs; //queryスナップショットでやったら？
+
                 // デリートしたのに上のリストではデリートする前のリストを取得してしまうため、デリートした要素をリスト上でも削除する
-                doc.removeAt(index);
+                listDoc.removeAt(index);
 
                 // リストの個数を取得
-                int docCount = doc.length;
+                int docCount = listDoc.length;
                 // 削除したリストのindex番号とリストの個数が違ってたら処理が実行。リストのindexとドキュメント数が一緒だったらスルーする
                 if (index != docCount) {
-                  // docCount - 1分だけのorderが各docに再代入される
+                  // docCountは１始まり、カウンタ変数は0始まりだからマイナス１で帳尻合わせ
                   for (int i = 0; i <= docCount - 1; i = i + 1) {
                     Model.instance.db
                         .collection(Model.instance.user.uid)
-                        .doc(doc[i].id)
+                        .doc(listDoc[i].id) //ここは１個から全てのドキュメントを更新していくため、
+                        // 変数doc（指定したドキュメント）「 DocumentSnapshot doc = snapshot.data!.docs[index];」は使用できないため、フルで全部書く
                         .update({
                       'order': i,
                     });
@@ -206,9 +214,9 @@ class _TodoState extends State<Todo> {
             },
             child: ListTile(
               // それぞのdocumentに入ってるのitemの中身を表示
-              title: Text(snapshot.data!.docs[index]["item"]),
+              title: Text(doc["item"]),
               subtitle: Text(
-                '${DateFormat('yyyy/MM/dd HH:mm').format(snapshot.data!.docs[index]['createdAt'].toDate())}',
+                '${DateFormat('yyyy/MM/dd HH:mm').format(doc['createdAt'].toDate())}',
                 style: TextStyle(fontSize: 11),
               ),
 
@@ -248,8 +256,7 @@ class _TodoState extends State<Todo> {
                                             Model.instance.db
                                                 .collection(
                                                     Model.instance.user.uid)
-                                                .doc(snapshot
-                                                    .data!.docs[index].id)
+                                                .doc(doc.id)
                                                 .update({
                                               "item":
                                                   TodoModel.instance.newItem,
@@ -266,19 +273,19 @@ class _TodoState extends State<Todo> {
                       icon: Icon(Icons.edit)),
                   IconButton(
                     onPressed: () {
-                      if (snapshot.data!.docs[index]['done'] == false) {
+                      if (doc['done'] == false) {
                         Model.instance.db
                             .collection(Model.instance.user.uid)
-                            .doc(snapshot.data!.docs[index].id)
+                            .doc(doc.id)
                             .update({'done': true});
                       } else {
                         Model.instance.db
                             .collection(Model.instance.user.uid)
-                            .doc(snapshot.data!.docs[index].id)
+                            .doc(doc.id)
                             .update({'done': false});
                       }
                     },
-                    icon: snapshot.data!.docs[index]['done'] == true
+                    icon: doc['done'] == true
                         ? Icon(Icons.check, color: Colors.blue.shade500)
                         : Icon(Icons.check),
                   ),
