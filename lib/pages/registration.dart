@@ -72,23 +72,23 @@ class Registration extends StatelessWidget {
                                     .instance.passwordRegistration);
 
                         // おまじない
-                        final User user = userCredential.user!;
-                        // Model.instance.user = userCredential.user!;
+                        // final User user = userCredential.user!;
+                        Model.instance.user = userCredential.user!;
 
                         // ランダムに生成されたドキュメントナンバーを取得
-                        final randomId0 =
-                            RegistrationModel.instance.makeRandomId(user);
-                        final randomId1 =
-                            RegistrationModel.instance.makeRandomId(user);
-                        final randomId2 =
-                            RegistrationModel.instance.makeRandomId(user);
-                        final randomId3 =
-                            RegistrationModel.instance.makeRandomId(user);
+                        final randomId0 = RegistrationModel.instance
+                            .makeRandomId(Model.instance.user);
+                        final randomId1 = RegistrationModel.instance
+                            .makeRandomId(Model.instance.user);
+                        final randomId2 = RegistrationModel.instance
+                            .makeRandomId(Model.instance.user);
+                        final randomId3 = RegistrationModel.instance
+                            .makeRandomId(Model.instance.user);
 
                         // 新規登録したときに例としてのtodoリストを１個作成する。このとき上で取得したDocIDをフィールド内の"id"に転記する
 
                         Model.instance.db
-                            .collection(user.uid)
+                            .collection(Model.instance.user.uid)
                             .doc(randomId0)
                             .set({
                           "item": "Add new Todo on the bottom button",
@@ -99,7 +99,7 @@ class Registration extends StatelessWidget {
                         });
 
                         Model.instance.db
-                            .collection(user.uid)
+                            .collection(Model.instance.user.uid)
                             .doc(randomId1)
                             .set({
                           "item": "Edit and check with the right side",
@@ -110,7 +110,7 @@ class Registration extends StatelessWidget {
                         });
 
                         Model.instance.db
-                            .collection(user.uid)
+                            .collection(Model.instance.user.uid)
                             .doc(randomId2)
                             .set({
                           "item": "Swipe for delete a list",
@@ -120,7 +120,7 @@ class Registration extends StatelessWidget {
                           'createdAt': Timestamp.now()
                         });
                         Model.instance.db
-                            .collection(user.uid)
+                            .collection(Model.instance.user.uid)
                             .doc(randomId3)
                             .set({
                           "item": "You can move lists. Give it a try!",

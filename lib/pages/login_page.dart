@@ -57,11 +57,9 @@ class MyHomePage extends StatelessWidget {
               onPressed: () async {
                 try {
                   // ログインさせる
-                  UserCredential userCredential = await FirebaseAuth.instance
-                      .signInWithEmailAndPassword(
-                          email: LogInPageModel.instance.mailAddress,
-                          password: LogInPageModel.instance.password);
-                  print('ユーザー情報：${userCredential.user} 終了');
+                  UserCredential userCredential = await Model.instance.logIn(
+                      LogInPageModel.instance.mailAddress,
+                      LogInPageModel.instance.password);
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => Todo(user: userCredential.user!)));
                 } on FirebaseAuthException catch (e) {

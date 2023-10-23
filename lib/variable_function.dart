@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+// 全てのページに使われてるもの
 class Model {
   // 他からインスタンス作成不可をする記述
   Model._();
@@ -9,10 +10,17 @@ class Model {
   static final instance = Model._();
 
   // 変数一覧
-  // 全てにまたがっているもの
   final db = FirebaseFirestore.instance;
-
   late User user;
+
+  // 関数
+  // ログイン関数
+  Future<UserCredential> logIn(String email, String password) async {
+    UserCredential userCredential = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
+    print('ユーザー情報：${userCredential.user} 終了');
+    return userCredential;
+  }
 }
 
 class LogInPageModel {
