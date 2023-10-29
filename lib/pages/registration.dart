@@ -45,7 +45,7 @@ class Registration extends StatelessWidget {
                 ),
               ),
               onPressed: () async {
-                await registration_process(context);
+                await registrationButton(context);
               },
             ),
           ],

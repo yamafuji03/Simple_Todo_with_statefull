@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/model/variable_function.dart';
 
-Future<void> registration_process(BuildContext context) async {
+Future<void> registrationButton(BuildContext context) async {
   if (RegistrationModel.instance.passwordRegistration !=
       RegistrationModel.instance.passwordCheckRegistration) {
     showDialog(
