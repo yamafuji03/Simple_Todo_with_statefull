@@ -1,6 +1,6 @@
 // files
-import 'package:todo2/middle/admob.dart';
-import 'package:todo2/middle/class_format.dart';
+import 'package:todo2/view_model/middle/admob.dart';
+import 'package:todo2/view_model/middle/class_format.dart';
 // packages
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

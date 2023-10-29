@@ -1,5 +1,5 @@
 // files
-import 'package:todo2/middle/admob.dart';
+import 'package:todo2/view_model/middle/admob.dart';
 import 'package:todo2/model/variable_function.dart';
 
 // packages
