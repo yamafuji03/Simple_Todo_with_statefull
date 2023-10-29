@@ -21,6 +21,10 @@ version: 1.0.0+1
 environment:
   sdk: '>=3.1.0 <4.0.0'
 
+flutter_icons:
+  image_path: "copy_icon_512.png"
+  ios: true
+  android: true
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
 # consider running `flutter pub upgrade --major-versions`. Alternatively,
@@ -40,6 +44,7 @@ dependencies:
   cloud_firestore: ^4.9.1
   intl: ^0.18.1
   google_mobile_ads: ^3.1.0
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
