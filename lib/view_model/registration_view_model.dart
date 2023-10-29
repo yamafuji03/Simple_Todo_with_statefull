@@ -1,7 +1,9 @@
+// files
+import 'package:todo2/model/variable_function.dart';
+// packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:todo2/model/variable_function.dart';
 
 Future<void> registrationButton(BuildContext context) async {
   if (RegistrationModel.instance.passwordRegistration !=

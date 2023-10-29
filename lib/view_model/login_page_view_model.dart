@@ -1,7 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+// files
 import 'package:todo2/model/variable_function.dart';
 import 'package:todo2/pages/todo.dart';
+// packages
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 Future<void> loginButton(BuildContext context) async {
   try {
