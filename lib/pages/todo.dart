@@ -1,11 +1,11 @@
 // files
-import 'package:todo2/view_model/middle/admob.dart';
 import 'package:todo2/model/variable_function.dart';
 
 // packages
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:todo2/view_model/admob.dart';
 
 class Todo extends StatefulWidget {
   @override

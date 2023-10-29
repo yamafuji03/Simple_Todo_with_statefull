@@ -1,11 +1,11 @@
 // files
-import 'package:todo2/view_model/middle/admob.dart';
-import 'package:todo2/view_model/middle/class_format.dart';
 // packages
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:todo2/model/variable_function.dart';
+import 'package:todo2/view_model/admob.dart';
+import 'package:todo2/view_model/class_format.dart';
 
 class Registration extends StatelessWidget {
   @override
