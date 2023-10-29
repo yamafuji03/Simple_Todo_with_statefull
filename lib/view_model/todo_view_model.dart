@@ -1,7 +1,9 @@
+// files
+import 'package:todo2/model/variable_function.dart';
+// packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:todo2/model/variable_function.dart';
 
 // todoのbodyの中身
 Widget buildBody(BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

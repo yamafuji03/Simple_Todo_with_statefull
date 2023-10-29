@@ -1,10 +1,10 @@
 // files
-// packages
-import 'package:flutter/material.dart';
 import 'package:todo2/model/variable_function.dart';
 import 'package:todo2/view_model/admob.dart';
 import 'package:todo2/view_model/custom_text_field.dart';
 import 'package:todo2/view_model/registration_view_model.dart';
+// packages
+import 'package:flutter/material.dart';
 
 class Registration extends StatelessWidget {
   @override
