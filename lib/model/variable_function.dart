@@ -38,8 +38,8 @@ class LogInPageModel {
   static final instance = LogInPageModel._();
 
   // 変数
-  String mailAddress = 'example@gmail.com'; //この２個はアプリ登録する時に''にしていること
-  String password = 'aaaaaa';
+  String mailAddress = ''; //この２個はアプリ登録する時に''にしていること
+  String password = '';
 }
 
 class RegistrationModel {
