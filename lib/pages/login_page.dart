@@ -72,7 +72,7 @@ class MyHomePage extends StatelessWidget {
         ],
       ),
       // 広告追加
-      bottomNavigationBar: AdMob(),
+      // bottomNavigationBar: AdMob(),
     );
   }
 }

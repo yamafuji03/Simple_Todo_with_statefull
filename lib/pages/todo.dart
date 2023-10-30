@@ -35,7 +35,7 @@ class _TodoState extends State<Todo> {
               },
               child: Icon(Icons.add),
             ),
-            bottomNavigationBar: AdMob(),
+            // bottomNavigationBar: AdMob(),
           );
         });
   }
