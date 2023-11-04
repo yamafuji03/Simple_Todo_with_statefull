@@ -1,4 +1,5 @@
 // files
+import 'package:todo2/pages/todo.dart';
 import 'package:todo2/view_model/admob.dart';
 import 'package:todo2/view_model/custom_text_field.dart';
 import 'package:todo2/pages/registration.dart';
@@ -67,6 +68,8 @@ class MyHomePage extends StatelessWidget {
             ),
             onPressed: () async {
               await loginButton(context);
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => Todo()));
             },
           ),
         ],

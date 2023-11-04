@@ -13,16 +13,18 @@ class Model {
   late User user;
 
   // 関数
-  // ログイン関数
-  Future<User> logIn(String email, String password) async {
-    UserCredential userCredential = await FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: email, password: password);
+  // // ログイン関数
+  // Future<User> logIn() async {
+  //   UserCredential userCredential = await FirebaseAuth.instance
+  //       .signInWithEmailAndPassword(
+  //           email: LogInPageModel.instance.mailAddress,
+  //           password: LogInPageModel.instance.password);
 
-    print('ユーザー情報：${userCredential.user} 終了');
+  //   print('ユーザー情報：${userCredential.user} 終了');
 
-    User user = userCredential.user!;
-    return user;
-  }
+  //   User user = userCredential.user!;
+  //   return user;
+  // }
 
   // ドキュメントのランダムID作成
   String makeRandomId(User user) {

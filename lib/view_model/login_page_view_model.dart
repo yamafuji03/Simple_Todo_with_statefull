@@ -7,11 +7,13 @@ import 'package:flutter/material.dart';
 
 Future<void> loginButton(BuildContext context) async {
   try {
-    // ログイン
-    Model.instance.user = await Model.instance.logIn(
-        LogInPageModel.instance.mailAddress, LogInPageModel.instance.password);
+    UserCredential userCredential = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+            email: LogInPageModel.instance.mailAddress,
+            password: LogInPageModel.instance.password);
+    print('ユーザー情報：${userCredential.user} 終了');
 
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => Todo()));
+    Model.instance.user = userCredential.user!;
   } on FirebaseAuthException catch (e) {
     // もしerror code　'user-not-found'ならメールアドレスがない
     if (e.code == 'user-not-found') {
@@ -45,6 +47,25 @@ Future<void> loginButton(BuildContext context) async {
                 title: Text("エラー"),
                 // 内容入力
                 content: Text("パスワードが違います"),
+                // ボタン。任意、書かなくてもいい
+                actions: [
+                  TextButton(
+                      child: Text("OK"),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      })
+                ]);
+          });
+    } else {
+      showDialog(
+          // おまじない
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+                // ウインドウ左上に表示させるもの
+                title: Text("ログインエラー"),
+                // 内容入力
+                content: Text("ログインエラー"),
                 // ボタン。任意、書かなくてもいい
                 actions: [
                   TextButton(
