@@ -56,19 +56,18 @@ class MyHomePage extends StatelessWidget {
             ],
           ),
           ElevatedButton(
-            child: Container(
-              width: 200,
-              height: 50,
-              alignment: Alignment.center,
-              child: Text(
-                "Log in",
-                textAlign: TextAlign.center,
+              child: Container(
+                width: 200,
+                height: 50,
+                alignment: Alignment.center,
+                child: Text(
+                  "Log in",
+                  textAlign: TextAlign.center,
+                ),
               ),
-            ),
-            onPressed: () async {
-              await loginButton(context);
-            },
-          ),
+              onPressed: () async {
+                await login(context);
+              }),
         ],
       ),
       // 広告追加
